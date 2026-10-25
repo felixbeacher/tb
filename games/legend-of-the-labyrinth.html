@@ -1,0 +1,1063 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Legend of the Labyrinth</title><style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050c0e;color:#fff;font-family:Nunito,system-ui,sans-serif}canvas{display:block;width:100%;height:100%;image-rendering:auto}#ui{position:fixed;inset:0;pointer-events:none}#hud{display:flex;align-items:start;justify-content:space-between;padding:17px 20px;gap:12px}#brand{font:900 clamp(14px,2vw,24px) Cinzel,serif;color:#e8d69a;text-shadow:0 2px 10px #000}#subtitle{font-size:11px;letter-spacing:2.5px;color:#b4caba;text-transform:uppercase;margin-top:4px}.panel{padding:10px 15px;background:#061514d9;border:1px solid #73977967;border-radius:9px;box-shadow:0 8px 22px #0008}#staminaWrap{width:132px;font:700 10px Nunito;color:#b6e8bf;letter-spacing:1px}#staminaTrack{margin-top:4px;height:9px;border:1px solid #80b49b;border-radius:9px;background:#112920;overflow:hidden}#staminaFill{width:100%;height:100%;background:linear-gradient(90deg,#399b7c,#b6f5ab)}#stats{display:flex;gap:15px;align-items:center;flex-wrap:wrap}#hearts{font-size:23px;color:#ec6c6b;letter-spacing:3px;text-shadow:0 2px 5px black}#potions,#keys{font-size:14px;color:#e7d89a}#hint{position:fixed;left:50%;bottom:13px;transform:translateX(-50%);padding:7px 12px;font-size:11px;color:#e8ead6;background:#07120ce8;border:1px solid #719b7752;border-radius:8px;white-space:normal;overflow-wrap:anywhere;text-align:center;width:min(690px,calc(100vw - 385px));max-width:78vw;line-height:1.4}#boss{position:fixed;top:80px;left:50%;transform:translateX(-50%);width:min(440px,68%);display:none;text-align:center;font:700 14px Cinzel;color:#f2b3a7;text-shadow:0 2px 4px #000}#bossbar{height:11px;margin-top:7px;border:1px solid #b56564;border-radius:8px;background:#270b0d;overflow:hidden}#bossfill{height:100%;background:linear-gradient(90deg,#a92832,#ff945e);width:100%}#message{position:fixed;top:17%;left:50%;transform:translateX(-50%);color:#ffe4a3;text-align:center;text-shadow:0 3px 9px #000;max-width:80%;font:700 18px Cinzel;opacity:0;transition:opacity .25s}#overlay{position:fixed;inset:0;background:radial-gradient(ellipse at center,#173026d9,#020807f7 77%);display:flex;align-items:center;justify-content:center;pointer-events:auto}#modal{width:min(620px,94vw);text-align:center;background:#081611eb;padding:32px;border:1px solid #a2b98b7d;border-radius:14px;box-shadow:0 20px 100px #000d}h1{font:900 clamp(26px,5vw,43px) Cinzel;color:#f5db91;margin:8px 0 5px;text-shadow:0 3px 20px #b8a56e53}#modal p{color:#cadac9;line-height:1.6}#modal small{color:#9fb6a4}button{pointer-events:auto;cursor:pointer;border:1px solid #e8d99f;background:linear-gradient(#e6ce82,#a88a46);padding:12px 27px;border-radius:6px;font:900 15px Cinzel;color:#15231b;margin:14px 3px;box-shadow:0 5px 20px #0008}button:hover{filter:brightness(1.2)}#map{position:fixed;right:20px;bottom:20px;width:174px;height:174px;background:#08130ce8;border:1px solid #73977978;border-radius:8px;padding:6px}#map canvas{width:100%;height:100%;image-rendering:pixelated}#help{position:fixed;left:20px;top:114px;bottom:auto;max-width:380px;line-height:1.35;font-size:11px;color:#aabead;text-shadow:0 2px 5px #000}#mute{position:fixed;right:22px;top:85px;background:#0d201acc;color:#e5dcad;border:1px solid #6e9275;padding:7px 10px;border-radius:6px;pointer-events:auto;cursor:pointer;font:700 12px Nunito}#testInvul{position:fixed;right:22px;top:125px;border:1px solid #8facaf;background:#101b20ec;color:#e5f1ee;border-radius:7px;padding:9px 12px;font:800 12px Nunito,sans-serif;letter-spacing:.35px;pointer-events:auto;cursor:pointer;box-shadow:0 3px 16px #0007}#testInvul[aria-pressed='true']{background:#21482f;color:#baffc4;border-color:#9fe7ab}#testInvul:focus-visible{outline:3px solid #ffdc83;outline-offset:2px}@media(pointer:coarse){#testInvul{right:9px;top:127px;padding:7px 9px;font-size:11px}}#touch{display:none;position:fixed;bottom:28px;left:16px;right:16px;pointer-events:none;justify-content:space-between}#dpad{width:140px;height:140px;position:relative}#dpad button,#actions button{position:absolute;min-width:43px;min-height:43px;padding:5px;margin:0;border-radius:50%;touch-action:none;opacity:.78}#actions button:nth-child(3){right:72px;top:8px;width:54px;height:54px}#dpad button:nth-child(1){top:0;left:47px}#dpad button:nth-child(2){top:47px;left:0}#dpad button:nth-child(3){top:47px;left:94px}#dpad button:nth-child(4){top:94px;left:47px}#actions{position:relative;width:140px;height:140px}#actions button:nth-child(1){right:0;top:25px;width:68px;height:68px}#actions button:nth-child(2){left:0;top:73px;width:62px;height:62px}@media(pointer:coarse){#touch{display:flex}#help,#hint,#map{display:none}#hud{padding:8px}#brand{font-size:13px}#subtitle{font-size:8px}#hearts{font-size:17px}.panel{padding:5px}}
+#shopOverlay{display:none;position:fixed;inset:0;z-index:35;background:#030c0ade;align-items:center;justify-content:center;pointer-events:auto}#shopBox{max-width:500px;width:92vw;text-align:center;padding:24px;background:linear-gradient(145deg,#1d3025,#08130d);border:2px solid #9dbb83;border-radius:16px}#shopBox h2{font:700 24px Cinzel;color:#e7d9a0}#shopBox p{color:#c5d5bd}#shopChoices{display:grid;gap:7px}#shopChoices button{margin:2px;padding:10px 13px;font-size:13px}#shopChoices button:disabled{opacity:.44;cursor:not-allowed}#puzzleOverlay{position:fixed;inset:0;background:#020b0ce8;display:none;align-items:center;justify-content:center;pointer-events:auto;z-index:30}#puzzleBox{background:linear-gradient(145deg,#142922,#09120f);border:2px solid #8eae8d;border-radius:14px;padding:20px;max-width:96vw;box-shadow:0 20px 90px #000}#puzzleBox h2{color:#ffe19a;font:700 23px Cinzel;text-align:center;margin:4px 0}#puzzleBox p{max-width:450px;text-align:center;color:#cbdccf;font-size:13px}#puzzleCanvas{width:min(440px,85vw);height:min(440px,85vw);border:1px solid #67897a;background:#07140f;image-rendering:pixelated}#puzzleClose{display:block;margin:10px auto 0;padding:8px 22px}#combatInfo{position:fixed;left:20px;top:92px;font:700 12px Nunito;color:#d6c98e;text-shadow:0 2px 6px #000;max-width:60vw} @media(max-width:1000px){#hint{max-width:70%;white-space:normal;text-align:center;font-size:10px;bottom:8px}#help{display:none}#combatInfo{max-width:52vw;font-size:10px}} @media(pointer:coarse){#combatInfo{display:none}}
+</style></head><body><a href="../#games" aria-label="Back to the game lab" style="position:fixed;left:14px;bottom:42px;z-index:9999;color:#c9d7c5;font:10px system-ui;text-decoration:none;background:#061514ba;padding:6px 9px;border:1px solid #73977967;border-radius:4px">← GAME LAB</a><canvas id="game"></canvas><div id="ui"><div id="hud"><div><div id="brand">✧ THE LEGEND OF THE LABYRINTH</div><div id="subtitle">A CLASSIC 2D MAZE ADVENTURE</div></div><div class="panel" id="stats"><span id="hearts">♥♥♥♥♥♥♥♥♥♥</span><span id="potions">✦ 2 potions</span><span id="keys">⚿ 0 / 3 seals</span><span id="tokens">✧ 0 leaf tokens</span><div id="staminaWrap">STAMINA <span id="staminaValue">100</span><div id="staminaTrack"><div id="staminaFill"></div></div></div></div></div><div id="combatInfo">3-hit combo: SPACE · K blocks frontal attacks, draining stamina · Tap K to parry</div><div id="boss">GANON, LORD OF SHADOWS<div id="bossbar"><div id="bossfill"></div></div></div><div id="message"></div><div id="damageNotice" aria-live="polite" style="position:fixed;left:50%;top:24%;transform:translate(-50%,0);font:900 24px Nunito,sans-serif;color:#ff777a;text-shadow:0 2px 8px #000,0 0 18px #e02536;opacity:0;transition:opacity .3s,transform .4s;pointer-events:none;z-index:20"></div><div id="hint">WASD move · F bow · 1 sword (after shrines) · Space combo · K shield/parry · Shift sprint · E interact · H heal · I test invulnerability · M map · P pause</div><div id="map"><canvas id="mini" width="164" height="164"></canvas></div><div id="help">Clear all shrines to claim the Master Sword from the altar in the hidden elf village · K blocks · Q: objective</div><div id="mute">♫ Sound on</div><button id="testInvul" type="button" aria-pressed="false" title="Testing only: toggle all incoming damage. Shortcut I.">TEST MODE · INVULNERABLE: OFF (I)</button><div id="touch"><div id="dpad"><button data-key="ArrowUp">▲</button><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="ArrowDown">▼</button></div><div id="actions"><button data-key="Space">⚔</button><button data-key="KeyF">➶</button><button data-key="KeyK">◈</button></div></div></div><div id="overlay"><div id="modal"><small>AN ADVENTURE THROUGH THE LOST WOODS</small><h1>THE LEGEND OF THE LABYRINTH</h1><p>Princess Zelda is trapped deep within the ancient labyrinth. As Link, seek the legendary Master Sword, still sealed in the village altar, and carry your shield and bow until you earn it. Enter the Ember Rift portal to face your own shadow, or collect three sacred seals and enter the separate Shadow Keep, solve its three magical locks, and defeat Ganon inside to rescue the princess. Discover three shrines with different randomly selected puzzles on each playthrough. Blocks, rotating mirrors, rune sequences and linked crystal switches test your ingenuity. Perfectly time shield parries and chain three sword strikes. The ancient Great Tree presides over a protected sanctuary with ten differently shaped elf houses and gardens, sixty named family members, individual layouts, one-time house perks and shops. Wolves and eight-legged Guardians stalk the quieter outer maze. Some innocent-looking travellers are actually banana-obsessed Yiga ninjas: speaking to them reveals their disguise and starts a fight. Each elf home has a unique garden, architecture and once-only household perk. Earn leaf tokens from monsters, speak to the residents, and claim the Master Sword at its altar only after all shrines are cleared. Four mossy arches also link opposite corners of the maze.</p><p><small>WASD or arrows to move · E to enter houses and talk to families · 1 sword (once earned) · 2 bow · SPACE slash · F shoot arrows · K block · SHIFT sprint · H to heal · E to talk · Q to change objective · M to toggle map · P to pause · Puzzle chambers: arrows, E and R to reset</small></p><button id="start">BEGIN THE QUEST ⚔</button></div></div>
+<div id="shopOverlay"><div id="shopBox"><h2 id="shopName">Village shop</h2><p>Trade tokens collected from defeated enemies. Prices are fixed.</p><div id="shopChoices"></div><button id="shopClose">FINISH SHOPPING (ESC)</button></div></div><div id="puzzleOverlay"><div id="puzzleBox"><h2 id="puzzleTitle">ANCIENT SHRINE</h2><p id="puzzleGuide"></p><canvas id="puzzleCanvas" width="440" height="440"></canvas><button id="puzzleClose">LEAVE SHRINE (ESC)</button></div></div><script>
+(()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),mini=document.getElementById('mini'),mc=mini.getContext('2d');let W=innerWidth,H=innerHeight,dpr=1;function resize(){W=innerWidth;H=innerHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();const TILE=48,COLS=49,ROWS=49,seed=19381;let rndSeed=seed;const rnd=()=>((rndSeed=(rndSeed*1664525+1013904223)>>>0)/4294967296),rand=(a,b)=>a+rnd()*(b-a),choose=a=>a[Math.floor(rnd()*a.length)];const grid=Array.from({length:ROWS},()=>Array(COLS).fill(1));let rooms=[];function carve(x,y){grid[y][x]=0;let dirs=[[0,-2],[2,0],[0,2],[-2,0]];for(let i=dirs.length-1;i>0;i--){let j=Math.floor(rnd()*(i+1));[dirs[i],dirs[j]]=[dirs[j],dirs[i]]}for(let [dx,dy] of dirs){let nx=x+dx,ny=y+dy;if(nx>0&&ny>0&&nx<COLS-1&&ny<ROWS-1&&grid[ny][nx]){grid[y+dy/2][x+dx/2]=0;carve(nx,ny)}}}carve(1,1);
+function room(cx,cy,rw,rh){let x=Math.max(1,Math.floor(cx-rw/2)),y=Math.max(1,Math.floor(cy-rh/2));for(let j=y;j<Math.min(ROWS-1,y+rh);j++)for(let i=x;i<Math.min(COLS-1,x+rw);i++)grid[j][i]=0;rooms.push({x:cx,y:cy})}room(3,3,7,7);room(45,45,9,9);room(45,3,9,9);room(3,45,7,7);room(25,25,25,25);room(25,5,7,5);room(5,25,5,7);room(44,25,7,7);room(25,44,7,7);for(let i=0;i<55;i++){let x=1+Math.floor(rnd()*(COLS-2)),y=1+Math.floor(rnd()*(ROWS-2));if(grid[y][x]===1){let n=[[1,0],[-1,0],[0,1],[0,-1]].filter(([dx,dy])=>grid[y+dy]?.[x+dx]===0);if(n.length>=2&&rnd()<.6)grid[y][x]=0}}
+// The Great Tree's grove is secreted inside a broken moss-covered cloister.
+// The outer central room stays connected to the surrounding labyrinth.
+for(let gy=23;gy<=27;gy++)for(let gx=23;gx<=27;gx++){
+ if(gy===23||gy===27||gx===23||gx===27)grid[gy][gx]=1;
+ else grid[gy][gx]=0;
+}
+grid[27][25]=0;grid[28][25]=0;grid[29][25]=0;
+const center=(i)=>i*TILE+TILE/2;let player={x:center(3),y:center(3),testInvulnerable:false,r:14,hp:10,maxHp:10,stamina:100,maxStamina:100,dir:2,attack:0,cool:0,block:false,blockFlash:0,inv:0,potions:2,keys:0,weapon:'bow',combo:0,comboTimer:0,parry:0,parryCooldown:0,masterSword:false,elderBow:false,tokens:0,archeryBonus:0},boss={x:center(45),y:center(45),hp:24,max:24,dead:false,phase:0,summon:2,shoot:2,hit:0,r:25},zelda={x:center(45),y:center(3)},enemies=[],items=[],particles=[],deathBursts=[],projectiles=[],arrows=[],keys={},mapVisible=true,paused=true,ended=false,started=false,clock=0,shake=0,msgTime=0,audio=null,soundOn=true;let explored=Array.from({length:ROWS},()=>Array(COLS).fill(false));let sealPositions=[[3,45],[29,25],[44,25]];for(let [x,y] of sealPositions)items.push({type:'seal',x:center(x),y:center(y),r:13,t:rand(0,9)});for(let i=0;i<20;i++){let x=1+Math.floor(rnd()*(COLS-2)),y=1+Math.floor(rnd()*(ROWS-2));if(grid[y][x]===0&&Math.hypot(x-3,y-3)>8&&Math.hypot(x-45,y-45)>5){items.push({type:rnd()<.7?'heart':'potion',x:center(x),y:center(y),r:11,t:rand(0,9)})}}// Damage is measured in hearts. Defence is a skill choice, not a damage lottery.
+const MONSTER_DAMAGE={slime:1,bat:1,goblin:2,skeleton:2,wraith:3,iron:4,guardian:4,stalker:4,wolf:2,yiga:2,yigaElite:3};
+const sanctuaryRadius=17*TILE;
+const sanctuaryCenter={x:center(25),y:center(25)};
+function insideSanctuary(x,y,margin=0){return Math.hypot(x-sanctuaryCenter.x,y-sanctuaryCenter.y)<sanctuaryRadius+margin}
+const sanctuaryBells=Array.from({length:24},(_,i)=>{let a=i/24*Math.PI*2;return {x:sanctuaryCenter.x+Math.cos(a)*(sanctuaryRadius-10),y:sanctuaryCenter.y+Math.sin(a)*(sanctuaryRadius-10)}});
+
+const enemyTypes=['slime','goblin','bat','skeleton','wolf'];let elitesAwakened=false;const dungeon={stage:0,guardian:null,runes:[{x:center(42),y:center(3)},{x:center(48),y:center(3)}],crystal:{x:center(45),y:center(1)},notice:0};function spawn(type,x,y){
+ let stats={slime:[13,2,65],goblin:[15,3,78],bat:[10,2,105],skeleton:[15,4,78],wraith:[17,8,115],iron:[19,11,55],guardian:[23,16,80],wolf:[17,7,148],stalker:[27,25,48],yiga:[16,6,122],yigaElite:[19,13,105]};
+ let [r,hp,speed]=stats[type]||stats.goblin;
+ enemies.push({type,x,y,r,hp,max:hp,speed,dir:0,hit:0,attack:0,wander:rand(0,6),seed:rand(0,20),charge:1.4,laser:2.1,teleport:2.5,pack:0,eyeGlow:0});
+}for(let i=0;i<46;i++){let x=1+Math.floor(rnd()*(COLS-2)),y=1+Math.floor(rnd()*(ROWS-2));if(grid[y][x]===0&&Math.hypot(x-25,y-25)>18.3&&Math.hypot(x-3,y-3)>6&&Math.hypot(x-45,y-45)>4&&Math.hypot(x-45,y-3)>5)spawn(choose(enemyTypes),center(x),center(y))}
+
+// Rare ancient eight-legged Guardians and the banana-obsessed Yiga clan occupy the outer labyrinth.
+for(const [tx,ty,kind] of [[40,11,'stalker'],[8,38,'stalker'],[7,35,'wolf'],[40,35,'wolf']]){
+ let found=null;
+ for(let r=0;r<=5&&!found;r++)for(let oy=-r;oy<=r&&!found;oy++)for(let ox=-r;ox<=r&&!found;ox++){
+   let xx=tx+ox,yy=ty+oy;if(xx>1&&yy>1&&xx<COLS-2&&yy<ROWS-2&&grid[yy][xx]===0&&!insideSanctuary(center(xx),center(yy),50))found=[xx,yy];
+ }
+ if(found)spawn(kind,center(found[0]),center(found[1]));
+}
+// The banana-obsessed clan blend into the roads as seemingly harmless travellers.
+// They become enemies only after Link approaches and presses E.
+const hiddenYiga=[
+ {name:'Pello the Map Seller',story:'A fine map for a fine hero! Might you spare a moment?',guise:'cartographer',elite:false,x:0,y:0},
+ {name:'Suri the Wandering Cook',story:'I have found the perfect recipe. It needs just one more banana.',guise:'cook',elite:false,x:0,y:0},
+ {name:'Daven the Pilgrim',story:'My journey ends wherever curious heroes gather.',guise:'pilgrim',elite:true,x:0,y:0},
+ {name:'Lumo the Fruit Trader',story:'Fresh produce! Come closer to inspect my special stock.',guise:'merchant',elite:false,x:0,y:0},
+ {name:'Karu the Storyteller',story:'Would you like to hear a tale of the great Master Kohga?',guise:'storyteller',elite:true,x:0,y:0}
+];
+for(const [i,t] of hiddenYiga.entries()){
+ const [tx,ty]=[[8,10],[38,8],[9,39],[41,35],[39,41]][i];
+ let loc=null;
+ for(let r=0;r<9&&!loc;r++)for(let dy=-r;dy<=r&&!loc;dy++)for(let dx=-r;dx<=r&&!loc;dx++){
+  const xx=tx+dx,yy=ty+dy;
+  if(xx>1&&yy>1&&xx<COLS-2&&yy<ROWS-2&&grid[yy][xx]===0&&!insideSanctuary(center(xx),center(yy),65))loc=[xx,yy];
+ }
+ if(loc){t.x=center(loc[0]);t.y=center(loc[1]);t.originX=t.x;t.originY=t.y}
+ t.revealed=!loc;t.wander=2+i*.3;t.heading=i*1.4;
+}
+function revealYiga(t){
+ if(t.revealed||realm!=='maze')return;
+ t.revealed=true;
+ sparkle(t.x,t.y,'#d75a85',40);sparkle(t.x,t.y,'#e7d87c',22);
+ spawn(t.elite?'yigaElite':'yiga',t.x,t.y);
+ const foe=enemies[enemies.length-1];foe.teleport=2.3;foe.attack=1.2;foe.charge=2.4;
+ msg(t.elite?'YIGA BLADEMASTER: YOU FELL FOR OUR DISGUISE!':'YIGA CLAN! YOUR BANANAS BELONG TO MASTER KOHGA!',4.5);
+ monsterVoice(t.elite?'yigaElite':'yiga',1);tone(220,.55,'sawtooth',.08,1.9);
+}
+function updateTravellers(dt){
+ if(realm!=='maze')return;
+ for(const t of hiddenYiga){
+  if(t.revealed)continue;
+  t.wander-=dt;
+  if(t.wander<=0){t.heading+=rand(-2.1,2.1);t.wander=rand(1.3,3.2)}
+  if(Math.hypot(t.x-t.originX,t.y-t.originY)>145)t.heading=Math.atan2(t.originY-t.y,t.originX-t.x);
+  const nx=t.x+Math.cos(t.heading)*24*dt,ny=t.y+Math.sin(t.heading)*24*dt;
+  if(!insideSanctuary(nx,ny,35)&&!solid(nx,ny,15)){t.x=nx;t.y=ny}
+  else{t.heading+=1.3;t.wander=.6}
+ }
+}
+function drawTraveller(t,i){
+ if(t.revealed||Math.abs(t.x-player.x)>W/2-29||Math.abs(t.y-player.y)>H/2-65)return;
+ ctx.save();ctx.translate(t.x,t.y+Math.sin(clock*2+i)*1.5);
+ circle(0,24,17,'#07120d99');
+ const cloak=['#9a7960','#748c6b','#7e728e','#b49a60','#718796'][i];
+ poly([[-17,-7],[-20,20],[-10,27],[10,27],[20,20],[16,-7]],cloak);
+ poly([[-17,-8],[-14,-25],[-6,-32],[7,-32],[14,-25],[18,-8]],'#564a3c');
+ poly([[-12,-23],[-15,-9],[0,-2],[15,-9],[12,-23]],cloak);
+ circle(0,-13,10,'#d4ae91');poly([[-15,-26],[-6,-38],[7,-38],[16,-26]],'#493f3a');
+ rect(-6,-16,4,2,'#403c30');rect(3,-16,4,2,'#403c30');
+ rect(-9,22,7,8,'#423d39');rect(3,22,7,8,'#423d39');
+ rect(12,0,10,17,'#795d40');line(12,1,22,1,'#c9a676',2);
+ if(i%2===0){circle(18,6,4,'#eac75c');circle(21,11,3,'#eac75c')}
+ else{line(-20,-8,-26,13,'#b6a98a',3);circle(-26,13,3,'#d5bd8e')}
+ ctx.fillStyle='#f8e8bd';ctx.font='bold 11px Nunito,sans-serif';ctx.textAlign='center';ctx.shadowColor='#000';ctx.shadowBlur=5;
+ ctx.fillText(t.name,0,-45);
+ if(Math.hypot(t.x-player.x,t.y-player.y)<82)ctx.fillText('E · TALK',0,-59);
+ ctx.restore();
+}
+// Separate dungeon world: its own collision tiles, camera space, quests and boss arena.
+let realm='maze',transition=0,transitionSwapped=false;
+// The Ember Rift is a completely separate persistent dimension.
+const riftPortal={x:center(5),y:center(45)},lavaExit={x:center(24),y:center(40)};
+const lava={phase:'trials',step:0,question:false,completed:false,detaching:0,returnX:0,returnY:0};
+let mazeSave=null;
+const lavaTiles=Array.from({length:ROWS},()=>Array(COLS).fill(1));
+for(let y=7;y<=42;y++)for(let x=11;x<=37;x++)lavaTiles[y][x]=0;
+for(let y=35;y<=42;y++)for(let x=20;x<=28;x++)lavaTiles[y][x]=0;
+for(let y=16;y<=19;y++)for(let x=13;x<=16;x++)lavaTiles[y][x]=1;
+for(let y=26;y<=29;y++)for(let x=32;x<=35;x++)lavaTiles[y][x]=1;
+for(let [x,y] of [[13,12],[35,12],[13,34],[35,34],[17,23],[31,23]])lavaTiles[y][x]=1;
+const lavaStations=[{x:center(18),y:center(36)},{x:center(30),y:center(33)},{x:center(18),y:center(27)},{x:center(30),y:center(24)},{x:center(18),y:center(16)},{x:center(30),y:center(14)}];
+const lavaQuestions=[
+ {q:'I consume wood, yet water destroys me. What am I?',opts:['Fire','Wind','Stone'],answer:1},
+ {q:'Which substance withstands ordinary flames best?',opts:['Dry timber','Solid stone','Straw'],answer:2},
+ {q:'What grows brighter when darkness surrounds it?',opts:['A torch','A shadow','A footprint'],answer:1},
+ {q:'Three runes are etched: SUN, ECLIPSE, MOON. Which event occurs when the Moon blocks the Sun from view?',opts:['A solar eclipse','A thunderstorm','A comet'],answer:1},
+ {q:'A sealed library says: I speak without a mouth and return when called. What am I?',opts:['A flame','An echo','A mirror'],answer:2},
+ {q:'If each of three torches burns for four hours, how long can they illuminate a room when all lit together?',opts:['12 hours','4 hours','8 hours'],answer:2},
+ {q:'A metal bridge expands as it heats. Which gap best helps prevent buckling?',opts:['An expansion joint','A tighter bolt','A thicker blanket'],answer:1},
+ {q:'Two identical mirrors face each other. What do you see between them?',opts:['Repeated reflections','No reflection','Only one reflection'],answer:1},
+ {q:'A door has two keys, one warm and one cold. Its inscription says: choose the one that melts frost. Which?',opts:['Warm key','Cold key','Neither key'],answer:1},
+ {q:'An ancient clock has a minute hand at 12 and an hour hand at 3. How many degrees separate them?',opts:['45 degrees','90 degrees','180 degrees'],answer:2},
+ {q:'A torch is carried into a dark cave. What first becomes visible?',opts:['Objects lit by its flame','The cave beyond the light','The shadow behind a wall'],answer:1},
+ {q:'Four runes have values 1, 2, 4, 8. Which pair sums to 10?',opts:['1 and 8','2 and 8','2 and 4'],answer:2}
+];let lavaQuestionOrder=shuffleFresh(lavaQuestions).slice(0,3), lavaPuzzleOrder=shuffleFresh([0,1,2,3]).slice(0,3);
+
+const shadowBoss={x:center(24),y:center(12),r:18,hp:36,max:36,dead:false,stage:1,hit:0,slash:1.7,arrow:2.1,dash:3,heal:12,block:0,copyDir:2,anim:0};
+function loadRealm(tiles){for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++)grid[y][x]=tiles[y][x]}
+function enterLava(){if(realm!=='maze')return;if(!lava.completed&&lava.step===0){lavaQuestionOrder=shuffleFresh(lavaQuestions).slice(0,3);lavaPuzzleOrder=shuffleFresh([0,1,2,3]).slice(0,3)}mazeSave={grid:grid.map(r=>r.slice()),explored:explored.map(r=>r.slice()),enemies:enemies.slice(),items:items.slice(),x:player.x,y:player.y};loadRealm(lavaTiles);realm='lava';explored=Array.from({length:ROWS},()=>Array(COLS).fill(false));enemies=[];items=[];projectiles=[];arrows=[];player.x=lavaExit.x;player.y=lavaExit.y;player.inv=1.8;lava.phase=lava.completed?'complete':'trials';lava.question=false;document.getElementById('subtitle').textContent='THE EMBER RIFT · A WORLD OF LAVA';document.getElementById('help').textContent='Find trial altars · Randomised harder riddles and environmental puzzles · Shadow Link awaits';msg('THE EMBER RIFT — SIX TRIALS AWAIT',5);tone(98,.7,'sawtooth',.09,1.6)}
+function exitLava(){if(!mazeSave)return;loadRealm(mazeSave.grid);realm='maze';explored=mazeSave.explored;enemies=mazeSave.enemies;items=mazeSave.items;player.x=mazeSave.x;player.y=mazeSave.y;player.inv=2;projectiles=[];arrows=[];document.getElementById('subtitle').textContent='A CLASSIC 2D MAZE ADVENTURE';document.getElementById('help').textContent='Collect three sacred seals · Seek the hidden Great Tree · Look for root passages in the four corners';msg('You have returned from the Ember Rift.',4)}
+function openLavaQuestion(){lava.question=true;paused=true;const info=lavaQuestionOrder[Math.floor(lava.step/2)];document.getElementById('puzzleOverlay').style.display='flex';document.getElementById('puzzleTitle').textContent='EMBER TRIAL — RIDDLE '+(Math.floor(lava.step/2)+1);document.getElementById('puzzleGuide').textContent=info.q+'  '+info.opts.map((v,i)=>(i+1)+' · '+v).join('     ')+'  (Press 1, 2 or 3)';document.getElementById('puzzleCanvas').style.display='none';document.getElementById('puzzleClose').textContent='BACK TO THE RIFT (ESC)'}
+function answerLava(n){const info=lavaQuestionOrder[Math.floor(lava.step/2)];if(n===info.answer){lava.step++;msg('RIDDLE SOLVED — THE NEXT ALTAR AWAKENS!',4);tone(810,.5,'triangle',.1,1.7);sparkle(player.x,player.y,'#ffcb68',38)}else{msg('Incorrect. The altar drains 15 stamina — consider the clue.',3);tone(150,.4,'sawtooth',.08,.5);player.stamina=Math.max(0,player.stamina-15)}lava.question=false;paused=false;document.getElementById('puzzleOverlay').style.display='none'}
+function triggerShadow(){lava.phase='detach';lava.detaching=3.8;shadowBoss.x=player.x;shadowBoss.y=player.y+18;shadowBoss.hp=shadowBoss.max;shadowBoss.dead=false;shadowBoss.stage=1;shadowBoss.slash=2;shadowBoss.arrow=2.5;shadowBoss.dash=3;shadowBoss.heal=10;msg('YOUR SHADOW IS BREAKING FREE...',5);tone(68,1.5,'sawtooth',.12,.42)}
+function lavaInteract(){if(lava.phase==='complete'&&Math.hypot(player.x-lavaExit.x,player.y-lavaExit.y)<85){exitLava();return}if(lava.phase==='trials'&&lava.step<6&&Math.hypot(player.x-lavaStations[lava.step].x,player.y-lavaStations[lava.step].y)<85){if(lava.step%2===0)openLavaQuestion();else{let id=Math.floor(lava.step/2);openPuzzle({title:['Ember Crucible — Heavy Stones','Prism Forge — Firelight','The Ashen Constellation'][id],lavaId:id,puzzleId:lavaPuzzleOrder[id],done:false})}return}msg(lava.phase==='boss'?'Defeat Shadow Link!':lava.phase==='detach'?'Your shadow has awakened!':'Follow the yellow marker to the next trial altar.',3)}
+function shadowHit(n){if(shadowBoss.dead||lava.phase!=='boss'||shadowBoss.hit>.05)return;if(shadowBoss.block>0){sparkle(shadowBoss.x,shadowBoss.y,'#b5b9ff',14);tone(720,.15,'triangle',.09,.6);return}shadowBoss.hp=Math.max(0,shadowBoss.hp-n);shadowBoss.hit=.18;sparkle(shadowBoss.x,shadowBoss.y,'#ec5572',12);if(shadowBoss.hp<=0){shadowBoss.dead=true;lava.phase='complete';lava.completed=true;sparkle(shadowBoss.x,shadowBoss.y,'#e5a2ff',100);msg('SHADOW LINK VANQUISHED! RETURN THROUGH THE PORTAL.',6);tone(880,.8,'triangle',.12,1.6)}}
+function updateShadow(dt){if(lava.phase==='detach'){lava.detaching-=dt;shadowBoss.y-=dt*76;if(lava.detaching<=0){lava.phase='boss';shadowBoss.x=center(24);shadowBoss.y=center(13);msg('SHADOW LINK — YOUR OWN POWER TURNED AGAINST YOU!',5)}return}if(lava.phase!=='boss'||shadowBoss.dead)return;let e=shadowBoss,dx=player.x-e.x,dy=player.y-e.y,d=Math.hypot(dx,dy)||1;e.hit=Math.max(0,e.hit-dt);e.block=Math.max(0,e.block-dt);e.anim=Math.max(0,e.anim-dt);const stage=e.hp>24?1:e.hp>12?2:3;if(stage!==e.stage){e.stage=stage;shake=16;sparkle(e.x,e.y,'#e9516a',50);msg('SHADOW LINK — PHASE '+stage+'! '+(stage===2?'THE MIRROR LEARNS TO DODGE':'THE MIRROR MASTERS EVERY WEAPON'),4)}e.copyDir=Math.abs(dx)>Math.abs(dy)?dx>0?1:3:dy>0?2:0;
+ const moveSpeed=stage===3?205:stage===2?170:135; if(d>75)move(e,dx/d*moveSpeed*dt,dy/d*moveSpeed*dt);else if(d<56)move(e,-dx/d*moveSpeed*.5*dt,-dy/d*moveSpeed*.5*dt);
+ e.slash-=dt;e.arrow-=dt;e.dash-=dt;e.heal-=dt;
+ if(e.slash<=0&&d<105){e.slash=stage===3?.85:1.5;e.anim=.42;monsterVoice('wraith',1);if(d<87){if(shieldCanBlock(e,11)){shieldSpend(11);if(player.parry>0){e.hit=0;e.slash+=1;shadowHit(3);msg('PARRY — YOUR SHADOW STAGGERS!',1.2)}else shieldClang()}else hurt(stage===3?4:stage===2?3:2,e.x,e.y)}}
+ if(e.arrow<=0){e.arrow=stage===3?1.15:stage===2?1.75:2.6;let a=Math.atan2(dy,dx);for(const off of stage===3?[-.18,0,.18]:[0])projectiles.push({x:e.x,y:e.y,vx:Math.cos(a+off)*310,vy:Math.sin(a+off)*310,life:2.1,r:6,shadow:true});tone(560,.13,'triangle',.06,.3)}
+ if(e.dash<=0){e.dash=stage===3?2.8:4.3;move(e,dx/d*90,dy/d*90);sparkle(e.x,e.y,'#b8a8ff',18);tone(410,.19,'sine',.07,.45)}
+ if(e.heal<=0&&stage>=2&&e.hp<e.max-3){e.heal=stage===3?10:14;e.hp=Math.min(e.max,e.hp+3);sparkle(e.x,e.y,'#79efa6',22);msg('Shadow Link copies your HEALING!',2);tone(680,.35,'sine',.06,1.3)}
+ // Shadow Link imitates the player's shield and weapon selection.
+ if(player.weapon==='sword'&&stage>=2&&d<115&&e.block<=0&&Math.random()<dt*.55)e.block=.8;
+}
+
+const portal={x:center(45),y:center(45)};
+const dungeonTiles=Array.from({length:ROWS},()=>Array(COLS).fill(1));
+function dungeonRoom(x0,y0,x1,y1){for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)dungeonTiles[y][x]=0}
+dungeonRoom(20,36,28,42);dungeonRoom(22,30,26,38);dungeonRoom(16,27,32,34);dungeonRoom(22,20,26,30);dungeonRoom(18,17,30,24);dungeonRoom(22,11,26,19);dungeonRoom(16,8,32,15);dungeonRoom(22,5,26,11);
+// Stone plinths and pillars give the boss room genuine cover.
+for(const [x,y] of [[18,10],[30,10],[18,14],[30,14],[19,20],[29,20],[19,30],[29,30]])dungeonTiles[y][x]=1;
+let dungeonPuzzleOrder=shuffleFresh([0,1,2,3]).slice(0,3);function enterDungeon(){dungeonPuzzleOrder=shuffleFresh([0,1,2,3]).slice(0,3);realm='dungeon';transitionSwapped=true;for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++)grid[y][x]=dungeonTiles[y][x];explored=Array.from({length:ROWS},()=>Array(COLS).fill(false));enemies=[];projectiles=[];arrows=[];particles=[];deathBursts=[];items=[];player.x=center(24);player.y=center(40);player.inv=2;boss.x=center(24);boss.y=center(12);boss.hp=boss.max;boss.lastStage=0;boss.dead=false;boss.summon=2;boss.shoot=2;zelda.x=center(24);zelda.y=center(7);dungeon.stage=0;dungeon.guardian=null;dungeon.runes=[{x:center(19),y:center(31)},{x:center(29),y:center(31)}];dungeon.crystal={x:center(24),y:center(19)};questFocus=false;document.getElementById('subtitle').textContent='THE SHADOW KEEP · ZELDA’S PRISON';document.getElementById('help').textContent='Find the Sun and Moon runes · Defeat the Guardian · Activate the crystal · Defeat Ganon · Free Zelda';msg('THE SHADOW KEEP — Solve the three locks, then defeat Ganon!',5);tone(110,1.2,'sawtooth',.08,.65)}
+function startDungeonTransition(){if(realm!=='maze'||transition>0||player.keys<3)return;transition=2.35;transitionSwapped=false;keys={};tone(440,.9,'triangle',.1,.45);tone(220,1.3,'sine',.08,.5)}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function houseShapeCollision(px,py,r,verts){
+ let inside=false;
+ for(let i=0,j=verts.length-1;i<verts.length;j=i++){
+  const a=verts[i],b=verts[j];
+  if((a[1]>py)!==(b[1]>py)&&px<(b[0]-a[0])*(py-a[1])/(b[1]-a[1])+a[0])inside=!inside;
+  const dx=b[0]-a[0],dy=b[1]-a[1],t=clamp(((px-a[0])*dx+(py-a[1])*dy)/(dx*dx+dy*dy||1),0,1);
+  if((px-a[0]-dx*t)**2+(py-a[1]-dy*t)**2<=r*r)return true;
+ }
+ return inside;
+}
+function solid(x,y,r){if(realm==='maze'){if(Math.hypot(x-treeSpot.x,y-(treeSpot.y-7))<r+22)return true;for(let i=0;i<villageHouses.length;i++){const h=villageHouses[i];if(Math.abs(x-h.x)>100||Math.abs(y-h.y)>112)continue;if(houseShapeCollision(x-h.x,y-h.y,r,houseFootprints[i]))return true}}for(let cy=Math.floor((y-r)/TILE);cy<=Math.floor((y+r)/TILE);cy++)for(let cx=Math.floor((x-r)/TILE);cx<=Math.floor((x+r)/TILE);cx++){if(!grid[cy]||grid[cy][cx]!==0){let bx=cx*TILE,by=cy*TILE,nx=clamp(x,bx,bx+TILE),ny=clamp(y,by,by+TILE);if((x-nx)**2+(y-ny)**2<r*r)return true}}return false}function move(o,dx,dy){
+ const hostile=realm==='maze'&&o!==player&&enemies.includes(o);
+ if(!solid(o.x+dx,o.y,o.r)&&(!hostile||!insideSanctuary(o.x+dx,o.y,o.r+8)))o.x+=dx;
+ if(!solid(o.x,o.y+dy,o.r)&&(!hostile||!insideSanctuary(o.x,o.y+dy,o.r+8)))o.y+=dy;
+}function msg(s,t=2.8){document.getElementById('message').textContent=s;document.getElementById('message').style.opacity='1';msgTime=t}function tone(freq,dur=.08,type='sine',vol=.055,slide=1){if(!soundOn||!audio)return;let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(35,freq*slide),audio.currentTime+dur);g.gain.setValueAtTime(vol,audio.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+dur);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}
+let musicBeat=0,musicMode='',ambientTick=0,monsterTick=0;
+function noiseBurst(duration=.14,frequency=900,gain=.05,filterType='bandpass'){
+ if(!soundOn||!audio)return;
+ const sr=audio.sampleRate, len=Math.max(64,Math.floor(sr*duration)),buf=audio.createBuffer(1,len,sr),ch=buf.getChannelData(0);
+ for(let i=0;i<len;i++)ch[i]=(Math.random()*2-1);
+ const source=audio.createBufferSource(),filter=audio.createBiquadFilter(),vol=audio.createGain(),t=audio.currentTime;
+ source.buffer=buf;filter.type=filterType;filter.frequency.setValueAtTime(frequency,t);filter.frequency.exponentialRampToValueAtTime(Math.max(80,frequency*.6),t+duration);
+ filter.Q.value=.85;vol.gain.setValueAtTime(.0002,t);vol.gain.linearRampToValueAtTime(gain,t+Math.min(.035,duration*.2));vol.gain.exponentialRampToValueAtTime(.0001,t+duration);
+ source.connect(filter).connect(vol).connect(audio.destination);source.start(t);source.stop(t+duration);
+}
+function metalSlash(){if(!soundOn||!audio)return;
+ // Cinema-style layered blade: rushing air, bright sliding steel, and a resonant metallic tail.
+ let t=audio.currentTime;
+ function bladeNoise(duration,startHz,endHz,vol,delay=0){let n=Math.floor(audio.sampleRate*duration),b=audio.createBuffer(1,n,audio.sampleRate),z=b.getChannelData(0),last=0;for(let i=0;i<n;i++){last=.76*last+(Math.random()*2-1)*.24;z[i]=last;}let src=audio.createBufferSource(),bp=audio.createBiquadFilter(),g=audio.createGain();src.buffer=b;bp.type='bandpass';bp.Q.value=.52;bp.frequency.setValueAtTime(startHz,t+delay);bp.frequency.exponentialRampToValueAtTime(endHz,t+delay+duration);g.gain.setValueAtTime(.0001,t+delay);g.gain.exponentialRampToValueAtTime(vol,t+delay+duration*.22);g.gain.exponentialRampToValueAtTime(.0001,t+delay+duration);src.connect(bp).connect(g).connect(audio.destination);src.start(t+delay);src.stop(t+delay+duration)}
+ bladeNoise(.21,5400,550,.48);bladeNoise(.25,1700,350,.23,.025);
+ function singingSteel(freq,vol,delay,duration){let o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type='triangle';o.frequency.setValueAtTime(freq,t+delay);o.frequency.exponentialRampToValueAtTime(freq*.53,t+delay+duration);f.type='highpass';f.frequency.value=260;g.gain.setValueAtTime(.0001,t+delay);g.gain.exponentialRampToValueAtTime(vol,t+delay+.012);g.gain.exponentialRampToValueAtTime(.0001,t+delay+duration);o.connect(f).connect(g).connect(audio.destination);o.start(t+delay);o.stop(t+delay+duration)}
+ singingSteel(2100,.058,.018,.32);singingSteel(3100,.027,.045,.22);singingSteel(670,.04,.025,.29)
+}
+function monsterVoice(type,volume=1){if(!started||paused||!soundOn)return;
+ const m=Math.max(.2,Math.min(1,volume));
+ switch(type){
+ case 'slime':tone(125,.15,'sine',.038*m,1.6);tone(188,.15,'sine',.022*m,.65);break;
+ case 'bat':tone(1900,.065,'square',.018*m,.72);tone(1600,.05,'triangle',.02*m,1.15);break;
+ case 'goblin':tone(190,.22,'sawtooth',.032*m,.51);noiseBurst(.10,480,.024*m);break;
+ case 'skeleton':tone(590,.04,'square',.03*m,.45);tone(350,.07,'square',.021*m,.7);break;
+ case 'wraith':tone(390,.48,'sine',.042*m,.42);tone(412,.43,'triangle',.023*m,.68);break;
+ case 'iron':tone(170,.16,'square',.025*m,.83);tone(870,.09,'triangle',.04*m,.64);break;
+ case 'guardian':tone(95,.55,'sawtooth',.047*m,.42);tone(165,.38,'triangle',.04*m,.65);break;
+ case 'stalker':tone(930,.29,'sawtooth',.038*m,.32);tone(142,.34,'triangle',.035*m,.57);break;
+ case 'wolf':tone(310,.5,'sawtooth',.03*m,.53);tone(155,.26,'triangle',.038*m,.7);break;
+ case 'yiga':tone(640,.12,'triangle',.045*m,.6);noiseBurst(.15,1600,.021*m);break;
+ case 'yigaElite':tone(270,.27,'sawtooth',.042*m,.56);tone(790,.13,'square',.021*m,.6);break;
+ case 'ganon':tone(82,.63,'sawtooth',.055*m,.46);tone(123,.49,'triangle',.04*m,.68);break;
+ }
+}
+const scores={
+ explore:[220,293.66,329.63,392,329.63,293.66,246.94,196,220,261.63,329.63,440,392,329.63,293.66,246.94],
+ combat:[146.83,174.61,220,174.61,164.81,196,246.94,196,130.81,164.81,220,164.81,146.83,196,261.63,220],
+ healing:[329.63,392,493.88,587.33,659.25,587.33,493.88,392],
+ ganon:[110,116.54,138.59,164.81,110,138.59,196,146.83,103.83,123.47,155.56,185,92.5,110,138.59,174.61],
+ shadow:[174.61,155.56,146.83,174.61,207.65,185,146.83,138.59,130.81,155.56,174.61,116.54,146.83,130.81,110,146.83]
+};
+function musicAndAtmosphere(){if(!started||paused||!soundOn||!audio)return;
+ const closeEnemies=enemies.some(e=>e.hp>0&&Math.hypot(e.x-player.x,e.y-player.y)<260);
+ const closeBoss=realm==='dungeon'&&dungeon.stage>=4&&!boss.dead&&Math.hypot(boss.x-player.x,boss.y-player.y)<390;
+ const mode=realm==='lava'&&lava.phase==='boss'&&!shadowBoss.dead?'shadow':closeBoss?'ganon':clock<healMusicUntil?'healing':closeEnemies?'combat':'explore';
+ if(mode!==musicMode){musicMode=mode;musicBeat=0}
+ const n=scores[mode],beat=musicBeat++,base=n[beat%n.length];
+ if(mode==='ganon'){tone(base,.29,'sawtooth',.042,.93);tone(base/2,.46,'triangle',.045,1.001);if(beat%2===0)noiseBurst(.105,390,.05);if(beat%4===0)tone(55,.31,'square',.075,.55)}else if(mode==='shadow'){tone(base,.25,'triangle',.045,.985);tone(base*2,.12,'sine',.027,.92);if(beat%2===0)tone(base/2,.33,'sawtooth',.027,.9);if(beat%4===0)noiseBurst(.13,950,.033)}else if(mode==='combat'){
+  tone(base,.24,'triangle',.028,.998);if(beat%2===0)tone(base/2,.23,'sawtooth',.024,.997);
+  if(beat%4===0){tone(69,.11,'sine',.06,.45);noiseBurst(.065,500,.032)}
+ }else if(mode==='healing'){
+  tone(base,.42,'sine',.043,1.006);tone(base/2,.57,'triangle',.02,1.004);
+ }else{
+  tone(base,.43,'sine',.021,1.002);if(beat%4===0)tone(base/2,.72,'triangle',.015,1.001);
+ }
+ ambientTick++;
+ if(ambientTick%3===0){noiseBurst(.32,mode==='combat'?310:250,.012,'lowpass');tone(62+(ambientTick%5)*8,.65,'sine',.012,1.13)}
+ if(ambientTick%9===0){tone(realm==='lava'?220:740+(ambientTick%4)*105,.2,'sine',.014,.69)}if(realm==='lava'&&ambientTick%4===0){noiseBurst(.65,135,.026,'lowpass');tone(55,.8,'sawtooth',.012,1.08)}
+ if(++monsterTick%3===0){let nearby=enemies.filter(e=>e.hp>0&&Math.hypot(e.x-player.x,e.y-player.y)<280);if(nearby.length){let e=nearby[Math.floor(Math.random()*nearby.length)];monsterVoice(e.type,Math.max(.24,1-Math.hypot(e.x-player.x,e.y-player.y)/360))}else if(closeBoss)monsterVoice('ganon',.7)}
+}
+setInterval(musicAndAtmosphere,modeInterval());
+function modeInterval(){return 320}
+function swordWhoosh(){if(!soundOn||!audio)return;noiseBurst(.075,820,.025,'bandpass')}function shieldClang(){player.blockFlash=.21;tone(820,.08,'triangle',.075,.54);tone(290,.12,'square',.025,.6);sparkle(player.x-17,player.y+4,'#a9eafc',9)}function enemyDeath(e){sparkle(e.x,e.y,'#ffdf79',25);sparkle(e.x,e.y,['wraith','iron','guardian'].includes(e.type)?'#a487ff':'#7ff1cb',20);deathBursts.push({x:e.x,y:e.y,life:.48,max:.48,r:10});tone(e.type==='stalker'?960:e.type==='wolf'?260:e.type==='yiga'?650:e.type==='guardian'?180:420,.25,'triangle',.055,.3)}function hitSound(){tone(170,.14,'sawtooth',.05,.45)}function sparkle(x,y,col,n=12){for(let i=0;i<n;i++){let a=rnd()*Math.PI*2,s=rand(35,145);particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:rand(.25,.65),max:.65,color:col,r:rand(2,5)})}}function showDamage(n){const el=document.getElementById('damageNotice');if(!el)return;el.textContent='−'+n+' '+(n===1?'HEART':'HEARTS');el.style.opacity='1';el.style.transform='translate(-50%,0) scale(1.12)';clearTimeout(showDamage.timeout);showDamage.timeout=setTimeout(()=>{el.style.opacity='0';el.style.transform='translate(-50%,-16px) scale(1)'},650)}
+function hurt(n=1,fromX=player.x,fromY=player.y){if(player.testInvulnerable||player.inv>0||ended||realm==='maze'&&insideSanctuary(player.x,player.y))return;n=Math.max(1,n-(player.wardCharm?1:0));showDamage(n);player.hp-=n;player.inv=.9;shake=9;hitSound();let d=Math.hypot(player.x-fromX,player.y-fromY)||1;move(player,(player.x-fromX)/d*20,(player.y-fromY)/d*20);sparkle(player.x,player.y,'#e95f63',10);if(player.hp<=0)finish(false)}function recoverAtCheckpoint(){ended=false;paused=false;player.hp=Math.max(6,Math.round(player.maxHp*.75));player.stamina=player.maxStamina;player.inv=3;keys={};projectiles=[];arrows=[];enemies=enemies.filter(e=>!e.bossMinion);if(realm==='house'){leaveHouse()}else if(realm==='maze'){player.x=center(25);player.y=center(30)}else if(realm==='lava'){player.x=lavaExit.x;player.y=lavaExit.y}else if(realm==='dungeon'){player.x=center(24);player.y=center(40)}if(realm==='maze'&&solid(player.x,player.y,player.r)){player.x=center(25);player.y=center(29)}document.getElementById('overlay').style.display='none';msg('RETURNED TO A SAFE CHECKPOINT — YOUR QUEST PROGRESS IS SAVED FOR THIS SESSION.',5)}
+function finish(win){ended=true;paused=true;document.getElementById('overlay').style.display='flex';document.getElementById('modal').innerHTML=win?'<small>THE DARKNESS HAS LIFTED</small><h1>THE PRINCESS IS FREE!</h1><p>Link has defeated Ganon and rescued Princess Zelda. Peace returns to the labyrinth.</p><button id="restart">PLAY AGAIN ✦</button>':'<small>THE SHADOWS OVERWHELM YOU</small><h1>THE HERO HAS FALLEN</h1><p>Continue from a safe checkpoint with your seals, shrine upgrades and equipment intact, or restart the adventure.</p><button id="continueQuest">CONTINUE FROM CHECKPOINT</button><button id="restart">RESTART QUEST</button>';document.getElementById('restart').onclick=()=>location.reload();const retry=document.getElementById('continueQuest');if(retry)retry.onclick=recoverAtCheckpoint}
+function slash(){if(player.cool>0||ended||paused||player.block)return;if(!player.masterSword){msg('The Master Sword still rests in the sacred altar. Clear every shrine first.',3.5);tone(180,.12,'triangle',.04,.7);return}player.weapon='sword';player.combo=player.comboTimer>0?(player.combo%3)+1:1;player.comboTimer=.72;player.attack=.22;player.cool=player.combo===3?.29:.22;swordWhoosh();metalSlash();if(player.combo===3){sparkle(player.x,player.y,'#95d9ff',18);tone(950,.2,'triangle',.07,.6)}for(let e of enemies){let dist=Math.hypot(e.x-player.x,e.y-player.y);if(dist<87&&facing(e)){if(e.type==='iron'&&e.guard>0){e.guard=0;e.hit=.42;shieldClang();continue}e.hp-=player.combo===3?4:2;e.hit=.24;e.stun=player.combo===3?.42:.12;let a=Math.atan2(e.y-player.y,e.x-player.x);move(e,Math.cos(a)*18,Math.sin(a)*18);sparkle(e.x,e.y,'#e1ce81',8);monsterVoice(e.type,.65);tone(210,.09,'square',.035,.7)}}if(realm==='lava'&&lava.phase==='boss'&&!shadowBoss.dead&&Math.hypot(shadowBoss.x-player.x,shadowBoss.y-player.y)<95&&facing(shadowBoss))shadowHit(player.combo===3?5:2);if(realm==='dungeon'&&!boss.dead&&Math.hypot(boss.x-player.x,boss.y-player.y)<100&&facing(boss)){if(dungeon.stage>=4){boss.hp-=player.combo===3?2:1;boss.hit=.22;shake=4;sparkle(boss.x,boss.y,'#ff9e62',8);tone(105,.17,'sawtooth',.08,.7);if(boss.hp<=0){boss.dead=true;sparkle(boss.x,boss.y,'#f5c170',90);msg('GANON FALLS! Zelda’s prison is now open!',5);tone(660,.6,'triangle',.1,1.5)}}else msg('Solve the three dungeon locks first.',2)}for(let p of projectiles)if(Math.hypot(p.x-player.x,p.y-player.y)<68&&facing(p)){p.dead=true;sparkle(p.x,p.y,'#abc7ff',6)}}
+function shuffleFresh(arr){arr=arr.slice();for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+const shrinePuzzleOrder=shuffleFresh([0,1,2,3]).slice(0,3);
+const shrines=[
+ {x:center(25),y:center(7),title:'Shrine of Dawn',hint:'The sun rises in the EAST, climbs to the NORTH, and sets in the WEST. Choose the directions.',sequence:['2','1','3'],done:false},
+ {x:center(5),y:center(27),title:'Shrine of Echoes',hint:'The ancient bells ring LOW, HIGH, LOW. Press 1 for low and 2 for high.',sequence:['1','2','1'],done:false},
+ {x:center(25),y:center(42),title:'Shrine of Stars',hint:'Three celestial lights: MOON, SUN, STAR. 1=Sun, 2=Moon, 3=Star.',sequence:['2','1','3'],done:false}
+];let activeShrine=null,shrineSteps=0,bowCooldown=0;
+// Self-contained environmental puzzle chambers, each with its own physical rule.
+const puzzleCanvas=document.getElementById('puzzleCanvas'),pc=puzzleCanvas.getContext('2d');let puzzle=null;
+function openPuzzle(sh){let rank=sh.lavaId!==undefined?sh.lavaId+1:sh.dungeonStage!==undefined?sh.dungeonStage+1:shrines.indexOf(sh)+1;let difficulty=sh.lavaId!==undefined||sh.dungeonStage!==undefined?3:2;let id=sh.puzzleId!==undefined?sh.puzzleId:shrinePuzzleOrder[shrines.indexOf(sh)];let cfg={sh,id,px:1,py:6,steps:0,blocks:[],plates:[],mirrors:[],targets:[],sequence:[],switches:[],shots:0};
+if(id===0){cfg.plates=difficulty>=3?[[2,2],[4,2],[3,3]]:[[2,2],[4,2]];cfg.blocks=difficulty>=3?[[2,5],[4,5],[3,4]]:[[2,4],[4,4]]}
+if(id===1){let count=difficulty>=3?5:4;cfg.mirrors=Array.from({length:count},()=>Math.floor(Math.random()*4));cfg.targets=Array.from({length:count},()=>Math.floor(Math.random()*4));if(cfg.mirrors.every((x,i)=>x===cfg.targets[i]))cfg.mirrors[0]=(cfg.mirrors[0]+1)%4}
+if(id===2){const positions=[[1,1],[5,1],[3,3],[1,4],[5,4]];cfg.sequence=shuffleFresh(positions).slice(0,difficulty>=3?5:4)}
+if(id===3){cfg.switches=Array(difficulty>=3?5:4).fill(true);for(let j=0;j<7;j++){let i=Math.floor(Math.random()*cfg.switches.length);for(let k=i-1;k<=i+1;k++)if(k>=0&&k<cfg.switches.length)cfg.switches[k]=!cfg.switches[k]}if(cfg.switches.every(Boolean)){for(let k=0;k<Math.min(3,cfg.switches.length);k++)cfg.switches[k]=!cfg.switches[k]}}
+puzzle=cfg;activeShrine=sh;document.getElementById('puzzleOverlay').style.display='flex';document.getElementById('puzzleTitle').textContent=sh.title;const descriptions=[`Push ${cfg.blocks.length} heavy stones onto the glowing plates. Do not trap a stone against the border. Press R to reset.`,`Rotate each of the ${cfg.mirrors.length} mirrors with E while standing beside it. Match the orientation on the gold marker above it.`,`Activate the ${cfg.sequence.length} rune tiles in the order indicated by their numbers. Stepping on an out-of-order rune resets the sequence.`,`Each switch toggles itself AND its neighbours. Move beside one and press E. Light every crystal. Press R to reset.`];document.getElementById('puzzleGuide').textContent=descriptions[id];drawPuzzle()}
+function drawPuzzle(){if(!puzzle)return;let q=puzzle,id=q.id;pc.clearRect(0,0,440,440);pc.fillStyle='#0b1715';pc.fillRect(0,0,440,440);let ox=44,oy=44,u=50;for(let y=0;y<7;y++)for(let x=0;x<7;x++){pc.fillStyle=(x+y)%2?'#24413b':'#1b352f';pc.fillRect(ox+x*u,oy+y*u,u-2,u-2);pc.strokeStyle='#6a837450';pc.strokeRect(ox+x*u,oy+y*u,u-2,u-2)}const tile=(x,y,color,sym,r=17)=>{pc.fillStyle=color;pc.beginPath();pc.arc(ox+(x+.5)*u,oy+(y+.5)*u,r,0,7);pc.fill();pc.fillStyle='#fff6d5';pc.font='bold 20px sans-serif';pc.textAlign='center';pc.textBaseline='middle';pc.fillText(sym,ox+(x+.5)*u,oy+(y+.5)*u)};
+if(id===0){for(let [x,y] of q.plates)tile(x,y,'#cf984d','✦');for(let [x,y] of q.blocks){pc.fillStyle='#879991';pc.fillRect(ox+x*u+6,oy+y*u+6,36,36);pc.strokeStyle='#ead6a6';pc.lineWidth=3;pc.strokeRect(ox+x*u+8,oy+y*u+8,32,32)}}
+if(id===1){let glyphs=['╱','╲','─','│'];for(let i=0;i<q.mirrors.length;i++){let x=1+i,y=2;tile(x,y,'#326873',glyphs[q.mirrors[i]]);pc.fillStyle='#ffe29d';pc.font='bold 23px sans-serif';pc.textAlign='center';pc.fillText(glyphs[q.targets[i]],ox+(x+.5)*u,oy+(y-.1)*u)}tile(5,0,'#bc9745','★')}
+if(id===2){q.sequence.forEach(([x,y],i)=>tile(x,y,i<q.steps?'#55b991':'#ad7640',String(i+1)))}
+if(id===3){for(let i=0;i<q.switches.length;i++)tile(i+1,2,q.switches[i]?'#57b997':'#71525f',q.switches[i]?'✦':'◇')}
+tile(q.px,q.py,'#4db87e','◆',13);pc.fillStyle='#e4d6aa';pc.font='13px sans-serif';pc.textAlign='center';pc.fillText(['Stone plates: '+q.plates.length+' targets','Rotate to match gold symbols','Order: '+(q.steps+1)+' of '+q.sequence.length,'All crystals must glow'][id],220,420)}
+function puzzleMove(dx,dy){if(!puzzle)return;let q=puzzle,nx=q.px+dx,ny=q.py+dy;if(nx<0||ny<0||nx>6||ny>6)return;if(q.id===0){let b=q.blocks.find(z=>z[0]===nx&&z[1]===ny);if(b){let bx=nx+dx,by=ny+dy;if(bx<0||by<0||bx>6||by>6||q.blocks.some(z=>z!==b&&z[0]===bx&&z[1]===by))return;b[0]=bx;b[1]=by}}q.px=nx;q.py=ny;if(q.id===0&&q.plates.every(([x,y])=>q.blocks.some(b=>b[0]===x&&b[1]===y))){completePuzzle();return}if(q.id===2){let t=q.sequence[q.steps];if(t&&nx===t[0]&&ny===t[1]){q.steps++;tone(490+q.steps*90,.18,'sine',.08,1.5);if(q.steps===q.sequence.length){completePuzzle();return}}else if(q.sequence.some(([x,y])=>x===nx&&y===ny)){q.steps=0;tone(160,.3,'sawtooth',.03,.7)}}drawPuzzle()}
+function puzzleAction(){if(!puzzle)return;let q=puzzle;if(q.id===1){for(let i=0;i<q.mirrors.length;i++)if(Math.hypot(q.px-(i+1),q.py-2)<=1.1){q.mirrors[i]=(q.mirrors[i]+1)%4;tone(700,.11,'triangle',.06,1.3);if(q.mirrors.every((v,i)=>v===q.targets[i])){completePuzzle();return}drawPuzzle();return}}else if(q.id===3){for(let i=0;i<q.switches.length;i++)if(Math.hypot(q.px-(i+1),q.py-2)<=1.1){for(let k=i-1;k<=i+1;k++)if(k>=0&&k<q.switches.length)q.switches[k]=!q.switches[k];tone(560,.11,'triangle',.06,1.3);if(q.switches.every(Boolean)){completePuzzle();return}drawPuzzle();return}}}
+function closePuzzle(){puzzle=null;activeShrine=null;lava.question=false;paused=false;document.getElementById('puzzleCanvas').style.display='block';document.getElementById('puzzleClose').textContent='LEAVE SHRINE (ESC)';document.getElementById('puzzleOverlay').style.display='none'}
+function completePuzzle(){let sh=puzzle.sh;if(sh.lavaId!==undefined){closePuzzle();lava.step++;sparkle(player.x,player.y,'#ff9a54',35);msg('EMBER PUZZLE COMPLETE! '+lava.step+'/6 TRIALS',4);tone(860,.5,'triangle',.09,1.5);if(lava.step===6)triggerShadow();return}
+if(sh.dungeonStage!==undefined){const stage=sh.dungeonStage;closePuzzle();if(stage===0){dungeon.stage=1;msg('SUN LOCK OPENED! Seek the Moon rune.',4)}else if(stage===1){dungeon.stage=2;spawn('guardian',center(24),center(23));dungeon.guardian=enemies[enemies.length-1];msg('MOON LOCK OPENED! An ancient guardian awakens!',5)}else if(stage===3){dungeon.stage=4;msg('THE LAST CRYSTAL AWAKENS! Ganon awaits!',5)}sparkle(player.x,player.y,'#d2b6fa',55);tone(770,.5,'triangle',.1,1.5);return}
+sh.done=true;player.maxHp++;player.hp=player.maxHp;player.maxStamina+=25;player.stamina=player.maxStamina;closePuzzle();sparkle(player.x,player.y,'#fce1a1',55);tone(900,.65,'triangle',.12,1.8);msg('SHRINE CLEARED! +1 HEART and +25 STAMINA!',5);if(allShrinesDone())msg('ALL SHRINES COMPLETE! THE MASTER SWORD CAN NOW BE DRAWN IN THE ELF VILLAGE!',6)}
+function shrineInput(k){return false}
+function fireBow(){if(!started||paused||ended||bowCooldown>0||player.block)return;player.weapon='bow';bowCooldown=realm==='dungeon'||realm==='lava'?.58:.40;const a=[-Math.PI/2,0,Math.PI/2,Math.PI][player.dir];arrows.push({x:player.x+Math.cos(a)*21,y:player.y+Math.sin(a)*21,vx:Math.cos(a)*510,vy:Math.sin(a)*510,life:1.4,angle:a});tone(680,.12,'triangle',.043,.35);noiseBurst(.09,1500,.02)}
+function facing(e){let a=Math.atan2(e.y-player.y,e.x-player.x),dir=[-Math.PI/2,0,Math.PI/2,Math.PI][player.dir];return Math.cos(a-dir)>=Math.SQRT1_2}
+function shieldCanBlock(attacker,cost=8){return player.block&&player.stamina>=cost&&facing(attacker)}
+function shieldSpend(cost){player.stamina=Math.max(0,player.stamina-cost);player.inv=Math.max(player.inv,.12)}
+function awakenElites(){if(elitesAwakened)return;elitesAwakened=true;let placed=0;for(let i=0;i<300&&placed<10;i++){let x=1+Math.floor(rnd()*(COLS-2)),y=1+Math.floor(rnd()*(ROWS-2));if(grid[y][x]===0&&Math.hypot(x-25,y-25)>17&&Math.hypot(x-3,y-3)>9&&Math.hypot(x-45,y-3)>9&&Math.hypot(x-45,y-45)>5){spawn(placed%2?'iron':'wraith',center(x),center(y));placed++}}msg('The seals awaken IRON SENTINELS and SHADOW WRAITHS!',5);tone(85,.8,'sawtooth',.09,1.8)}
+function dungeonInteract(){
+ if(realm!=='dungeon')return false;
+ if(dungeon.stage===0&&Math.hypot(player.x-dungeon.runes[0].x,player.y-dungeon.runes[0].y)<67){openPuzzle({title:'Shadow Keep: Sun Lock',dungeonStage:0,puzzleId:dungeonPuzzleOrder[0]});return true}
+ if(dungeon.stage===1&&Math.hypot(player.x-dungeon.runes[1].x,player.y-dungeon.runes[1].y)<67){openPuzzle({title:'Shadow Keep: Moon Lock',dungeonStage:1,puzzleId:dungeonPuzzleOrder[1]});return true}
+ if(dungeon.stage===2&&dungeon.guardian?.hp<=0){dungeon.stage=3;msg('Guardian destroyed! Find the crystal to break the THIRD lock.',5);tone(710,.5,'triangle',.1,1.7);return true}
+ if(dungeon.stage===3&&Math.hypot(player.x-dungeon.crystal.x,player.y-dungeon.crystal.y)<66){openPuzzle({title:'Shadow Keep: Final Crystal',dungeonStage:3,puzzleId:dungeonPuzzleOrder[2]});return true}
+ if(dungeon.stage===2&&dungeon.guardian?.hp>0){msg('Defeat the guardian, then press E to advance.',2);return true}
+ return false;
+}
+
+const npcs=[
+{name:'Elder Rowan',x:center(5),y:center(5),color:'#dfc785',intro:'Defeat five monsters and return to me. I shall reward you with a potion.',done:false,kind:'hunt'},
+{name:'Mira the Scout',x:center(25),y:center(5),color:'#8ed9ed',intro:'My silver compass is lost in the southern ruins. Find it and bring it back!',done:false,kind:'compass'},
+{name:'Sage Elowen',x:center(5),y:center(25),color:'#d2a2f7',intro:'Come back with the three sacred seals, and I will restore your hearts.',done:false,kind:'sage'}];
+// A concealed Great Tree grove near the exact centre of the labyrinth.
+const treeSpot={x:center(25),y:center(25)};
+const swordAltar={x:treeSpot.x+96,y:treeSpot.y+36,r:34};
+// Ten permanent houses around the Great Tree. Each contains a distinct household.
+const villageHouses=[
+ {name:'Fernlight Cottage',x:center(17),y:center(17),roof:'#62815c',kind:'home',family:[['Aeryn','thoughtful','We plant three seeds for every tree we fell. The forest remembers kindness.'],['Liora','gentle','You look tired. Sit by our hearth; you are welcome here.'],['Tavi','curious','Do you think the Great Tree dreams when all his leaves are asleep?']]},
+ {name:'Starlit Remedies',x:center(22),y:center(17),roof:'#628e80',kind:'healer',family:[['Ilyra','warm','I grind moonpetal with dew at sunrise. A little patience makes powerful medicine.'],['Orin','practical','My remedies are measured, not guessed. Spend your tokens wisely.'],['Pip','excitable','I found a blue flower! Ilyra says it is a weed. I disagree.']]},
+ {name:'Willowbow Workshop',x:center(28),y:center(17),roof:'#576f90',kind:'bowyer',family:[['Theron','proud','A bow must bend without breaking. So must a warrior.'],['Sela','witty','Father makes the bows. I make sure the prices are not ridiculous.'],['Nim','bold','I shot an apple from the tallest branch. Nobody was beneath it. Probably.']]},
+ {name:'Golden Acorn Market',x:center(33),y:center(17),roof:'#ae8657',kind:'market',family:[['Maelis','shrewd','These seeds are rare, and so are fair prices. Fortunately, I offer both.'],['Fenn','merry','I collect old coins, but leaf tokens are the only currency around here.'],['Runa','dreamy','Every market stall is a tiny world of possibilities.']]},
+ {name:'Moonbrook House',x:center(16),y:center(25),roof:'#817caa',kind:'home',family:[['Elandor','melancholy','When the shadows grew long, our songs grew quieter.'],['Vela','courageous','Fear tells us where we must be brave. It does not get to choose for us.'],['Kiri','playful','I made a maze out of twigs. Even my rabbit cannot escape it.']]},
+ {name:'Briarforge Hall',x:center(34),y:center(25),roof:'#976c58',kind:'smith',family:[['Bren','stoic','Steel is shaped by fire. Character is shaped by every decision.'],['Edda','resourceful','I can strengthen your kit, but it takes good materials. And tokens.'],['Cal','inventive','I am building a lantern that runs on laughter. Progress is slow.']]},
+ {name:'Silverleaf Library',x:center(17),y:center(34),roof:'#648293',kind:'home',family:[['Oryn','scholarly','Shrines do not measure knowledge alone. They test observation, movement and persistence.'],['Yselle','patient','The best riddle is one that teaches you how to ask questions.'],['Lenn','bookish','I memorised a hundred constellations. There may be more.']]},
+ {name:'The Singing Hollow',x:center(22),y:center(34),roof:'#9b747c',kind:'home',family:[['Cyran','musical','I play for the wind because it is the only audience that never leaves.'],['Nessa','kind','Our songs are a shelter for anyone who has lost their way.'],['Ael','mischievous','I hid my sister’s flute. She is playing the spoons now.']]},
+ {name:'Dawnweaver Home',x:center(28),y:center(34),roof:'#a69d62',kind:'home',family:[['Seris','optimistic','Tomorrow’s sunlight can make even yesterday’s mistakes look gentle.'],['Damar','protective','Do not enter the Ember Rift without potions. I have seen its flames.'],['Fia','adventurous','One day I shall find a secret tunnel the elders have forgotten.']]},
+ {name:'Mosswatch Lodge',x:center(33),y:center(34),roof:'#657953',kind:'home',family:[['Halden','vigilant','The paths may look safe, but watch the corners for wandering skeletons.'],['Arwen','cheerful','I bake berry bread for every traveller who finds our village.'],['Peren','quiet','The trees talk if you leave enough silence between your thoughts.']]}
+ ];
+// Every dwelling has three additional residents with their own voices and occupations.
+const extendedResidents=[[['Mirel', 'blunt botanist', 'That vine is poisonous. The purple one beside it is only rude.'], ['Sorrel', 'timid mapmaker', 'I drew a map to the market and still got lost in our kitchen.'], ['Aven', 'eccentric beekeeper', 'My bees recognise faces. They especially dislike liars.']], [['Velin', 'superstitious alchemist', 'Never stir a potion clockwise during a thunderstorm.'], ['Noor', 'skeptical herbalist', 'Miracles are excellent. Accurate measurements are better.'], ['Beryl', 'competitive sprinter', 'I can race the river to the falls. It always cheats.']], [['Kaia', 'fearless archer', 'My arrows have names. The one called Regret never misses.'], ['Rhos', 'precise engineer', 'Wood fibres have direction. So do people, usually.'], ['Evin', 'sarcastic tinkerer', 'I made an unbreakable bow. It weighs as much as a house.']], [['Jora', 'dramatic merchant', 'The finest acorns! No, the finest acorns in all recorded history!'], ['Milo', 'suspicious collector', 'Do not touch the bronze key. I do not know what it opens.'], ['Zeri', 'generous baker', 'Bread is for sharing, even with people who forget their wallets.']], [['Cassia', 'stubborn activist', 'I will not let anyone fell the ancient trees. Not even the king.'], ['Bram', 'hopeless romantic', 'I wrote Vela a poem. The squirrel ate the first draft.'], ['Uri', 'anxious astronomer', 'A falling star might be a sign. Or just a falling star.']], [['Hesta', 'gruff veteran', 'A clean edge saves more lives than a loud speech.'], ['Iona', 'jovial apprentice', 'I dropped the hammer again. The floor is getting stronger.'], ['Lys', 'meticulous jeweller', 'That scratch? You call it a scratch? It is a catastrophe.']], [['Nerin', 'cryptic historian', 'Three locks guard the past. A fourth guards what we forget.'], ['Sybelle', 'contemplative poet', 'The shelves hold more silences than books.'], ['Doli', 'hyperactive archivist', 'I indexed every leaf. Then autumn happened.']], [['Amara', 'shy singer', 'I only sing when the lanterns are lit. Please look away.'], ['Venn', 'boastful drummer', 'That thunder last night? I was practising indoors.'], ['Isla', 'rebellious dancer', 'Rules are rhythms someone else chose for your feet.']], [['Toren', 'kindly inventor', 'My clock runs on sunlight. It dislikes rainy days.'], ['Maren', 'stern navigator', 'Never travel without water. Never travel without purpose.'], ['Lumi', 'fearless explorer', 'I want to see the lava world. From a safe distance.']], [['Greer', 'watchful ranger', 'I can hear a wolf breathe beyond the old stones.'], ['Alda', 'dry-humoured cook', 'My mushroom soup has cured sadness. It has also caused hiccups.'], ['Pavo', 'secretive scout', 'The banana thieves came through the western thicket. That is all I know.']]];
+for(let i=0;i<villageHouses.length;i++)villageHouses[i].family.push(...extendedResidents[i]);
+const villageWalkers=[
+ {name:'Eira',x:center(20),y:center(25),line:'I keep these gardens in bloom. Come back when the sun returns.',trait:'garden keeper'},
+ {name:'Talion',x:center(31),y:center(24),line:'The path to the Great Tree bends between the stone arches. Walk softly.',trait:'village guardian'},
+ {name:'Saelen',x:center(23),y:center(29),line:'Have you heard the lanterns at night? They seem to sing.',trait:'village storyteller'},
+ {name:'Fenwyn',x:center(29),y:center(29),line:'My brothers are always arguing. I find the village pond much quieter.',trait:'curious traveller'},
+ {name:'Riele',x:center(20),y:center(30),line:'We welcome visitors who respect the forest. Come visit our families!',trait:'woodland healer'}
+];
+villageWalkers.push(
+ {name:'Quill',x:center(18),y:center(28),line:'I sketch the sanctuary wards. They keep monsters out, not brave travellers.',trait:'unruly cartographer'},
+ {name:'Nuala',x:center(32),y:center(30),line:'Eight legs, one red eye. If a Guardian wakes, hide behind real stone.',trait:'retired scout'},
+ {name:'Edric',x:center(18),y:center(22),line:'I run the night watch, though the barrier means we mostly count fireflies.',trait:'sleepy watchman'},
+ {name:'Opal',x:center(31),y:center(21),line:'The ninja stole my whole basket. They left the bananas.',trait:'furious grocer'},
+ {name:'Yarin',x:center(24),y:center(35),line:'Every home has its own shape. You can tell its owner by the windows.',trait:'homes architect'},
+ {name:'Niva',x:center(30),y:center(33),line:'I would invite a wolf inside, but I suspect the Great Tree would object.',trait:'animal whisperer'},
+ {name:'Iro',x:center(19),y:center(33),line:'I keep a journal of travellers. You have already earned three pages.',trait:'curious journalist'},
+ {name:'Rill',x:center(27),y:center(19),line:'The sanctuary is peaceful. Outside is another story entirely.',trait:'stoic sentinel'},
+ {name:'Sable',x:center(21),y:center(35),line:'The old bells hum when hostile magic touches the boundary.',trait:'ward singer'}
+);
+let houseSave=null, currentHouse=null, dialogueIndex=0;const elfDialogueTurns=new Map();
+const housePlans=[
+ {title:'Forest cottage · L-shaped parlour and loft',rooms:[[20,21,29,30],[17,17,23,24],[20,18,21,23]],people:[[19,19],[22,20],[26,23],[27,26],[23,26],[21,24]],floor:'#9b8363',rug:'#647b5b',decor:[['hearth',22,19],['table',25,24],['bed',19,20],['loom',28,27],['books',21,26],['plants',28,23],['chest',18,22]]},
+ {title:'Apothecary · T-shaped distillery',rooms:[[19,20,30,25],[22,24,27,31],[27,17,32,23],[18,17,22,21]],people:[[20,19],[29,19],[24,23],[25,27],[21,22],[29,22]],floor:'#7f9a82',rug:'#58776c',decor:[['cauldron',29,19],['herbs',20,19],['shelves',28,22],['table',24,23],['bottles',21,23],['bed',23,28],['mortar',30,22]]},
+ {title:'Bowyer · Long workshop and firing lane',rooms:[[17,19,32,24],[22,23,27,31],[28,24,31,27]],people:[[19,21],[24,21],[30,21],[29,25],[24,27],[22,23]],floor:'#a4835a',rug:'#5e745f',decor:[['target',30,20],['rack',20,20],['workbench',25,21],['quiver',29,25],['table',24,26],['shelves',19,22],['chest',30,26]]},
+ {title:'Market · U-shaped trading gallery',rooms:[[18,17,23,28],[27,17,32,28],[22,24,28,31],[22,17,27,20]],people:[[20,19],[30,20],[24,19],[20,24],[29,24],[24,28]],floor:'#a28b62',rug:'#a07952',decor:[['stall',20,20],['stall',30,20],['table',24,19],['baskets',20,25],['fruit',29,25],['chest',24,27],['barrels',24,23]]},
+ {title:'Moonbrook · C-shaped waterside retreat',rooms:[[19,18,29,22],[19,22,22,29],[27,22,30,29],[21,27,28,31],[22,23,27,25]],people:[[21,19],[27,19],[20,26],[29,26],[24,24],[25,29]],floor:'#76799c',rug:'#6d6da0',decor:[['fountain',24,20],['books',21,26],['bed',28,25],['table',24,24],['plants',21,20],['bench',24,29]]},
+ {title:'Briarforge · Forge, office and smithing annex',rooms:[[19,19,29,27],[27,17,33,24],[18,24,23,29],[22,26,27,31]],people:[[30,20],[22,21],[20,26],[25,27],[28,25],[24,23]],floor:'#8e7063',rug:'#71534c',decor:[['anvil',31,20],['forge',29,19],['weapons',21,20],['table',24,25],['chest',20,26],['barrels',27,24],['bed',23,28]]},
+ {title:'Silverleaf · Cross-wing library',rooms:[[22,17,27,31],[17,21,32,25],[18,18,22,22],[27,25,32,29]],people:[[20,20],[25,19],[30,23],[20,23],[29,27],[24,28]],floor:'#7c8b8d',rug:'#466776',decor:[['books',19,20],['books',29,27],['shelves',25,18],['shelves',29,23],['table',24,23],['globe',20,23],['desk',24,28],['chest',30,26]]},
+ {title:'Singing Hollow · Circular music room with wings',rooms:[[20,21,29,29],[18,18,23,23],[27,18,32,23],[23,27,26,31]],people:[[20,19],[30,20],[24,23],[22,26],[28,25],[24,29]],floor:'#977881',rug:'#a97f99',decor:[['piano',20,20],['drum',30,20],['stage',24,23],['harp',21,26],['flute',28,26],['bench',24,28],['lantern',29,24]]},
+ {title:'Dawnweaver · Split terraces and observatory',rooms:[[18,20,24,27],[26,18,32,27],[23,22,27,31],[20,17,23,21]],people:[[21,19],[30,20],[22,24],[29,25],[25,23],[25,28]],floor:'#ab9f71',rug:'#a69a58',decor:[['telescope',30,20],['loom',21,23],['clock',21,19],['table',26,25],['bed',28,24],['plants',25,28],['chest',20,25]]},
+ {title:'Mosswatch · Ranger tower and forest-facing wings',rooms:[[19,18,24,28],[24,19,31,24],[27,23,32,29],[22,26,27,31],[18,23,22,26]],people:[[21,20],[28,21],[30,26],[20,25],[25,27],[24,24]],floor:'#797f60',rug:'#6c8155',decor:[['map',20,20],['weapons',29,21],['lantern',30,26],['camp',21,24],['table',24,27],['herbs',29,27],['bed',25,29]]}
+];
+const houseTiles=Array.from({length:ROWS},()=>Array(COLS).fill(1));
+function buildHouseLayout(h){
+ for(let y=0;y<ROWS;y++)houseTiles[y].fill(1);
+ const plan=housePlans[villageHouses.indexOf(h)];
+ for(const [x0,y0,x1,y1] of plan.rooms)for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)houseTiles[y][x]=0;
+ // A shared exit is part of each plan, but the wings and main rooms are genuinely distinct.
+ for(let y=27;y<=30;y++)houseTiles[y][24]=0;
+ // Connect each section to the entrance so no guest is stranded in a disconnected wing.
+ for(const [x0,y0,x1,y1] of plan.rooms){
+  let mx=Math.floor((x0+x1)/2),my=Math.floor((y0+y1)/2);
+  for(let x=Math.min(24,mx);x<=Math.max(24,mx);x++)houseTiles[my][x]=0;
+  for(let y=Math.min(29,my);y<=Math.max(29,my);y++)houseTiles[y][24]=0;
+ }
+ return plan;
+}
+const houseExit={x:center(24),y:center(30)};
+let householdSpots=[];
+function assignHouseholdSpots(plan){householdSpots=plan.people.map(([x,y])=>[center(x),center(y)]);}
+function enterHouse(h){if(realm!=='maze'||paused)return;houseSave={grid:grid.map(r=>r.slice()),explored:explored.map(r=>r.slice()),enemies:enemies.slice(),items:items.slice(),x:player.x,y:player.y};currentHouse=h;const plan=buildHouseLayout(h);assignHouseholdSpots(plan);loadRealm(houseTiles);realm='house';enemies=[];items=[];arrows=[];projectiles=[];explored=Array.from({length:ROWS},()=>Array(COLS).fill(false));player.x=center(24);player.y=center(28);player.inv=1.25;document.getElementById('subtitle').textContent=h.name+' · ELF VILLAGE';document.getElementById('help').textContent='HOUSE PERK: '+housePerks[villageHouses.indexOf(h)].name+' · Speak to the first family member to claim · E by exit to leave';msg('WELCOME TO '+h.name.toUpperCase(),3);tone(495,.3,'sine',.035,1.2)}
+function leaveHouse(){if(!houseSave)return;loadRealm(houseSave.grid);realm='maze';explored=houseSave.explored;enemies=houseSave.enemies;items=houseSave.items;player.x=houseSave.x;player.y=houseSave.y+55;player.inv=1.2;arrows=[];projectiles=[];currentHouse=null;houseSave=null;document.getElementById('subtitle').textContent='THE LOST WOODS · ELVEN VILLAGE';document.getElementById('help').textContent='Visit village houses, talk to elves and trade with shopkeepers · E to interact';msg('The woodland air welcomes you back.',2.6)}
+const marketStock={healer:[['Buy 2 potions',9,()=>{player.potions+=2},false],['Blessing: +1 heart',32,()=>{player.maxHp++;player.hp=player.maxHp},true]],bowyer:[['Sharpen arrows: +1 damage',24,()=>{player.archeryBonus++},true],['Buy 1 potion',6,()=>{player.potions++},false]],market:[['Buy 3 potions',18,()=>{player.potions+=3},false],['Stamina tonic: +20 capacity',28,()=>{player.maxStamina+=20;player.stamina=player.maxStamina},true]],smith:[['Tempered arrows: +1 damage',30,()=>{player.archeryBonus++},true],['Vitality meal: +2 hearts now',11,()=>{player.hp=Math.min(player.maxHp,player.hp+2)},false]]};
+const housePerks=[
+ {name:'Woodland Remedies',gift:'One healing potion',take:()=>{player.potions++}},
+ {name:'Moonpetal Infusion',gift:'Two potions and a full heal',take:()=>{player.potions+=2;player.hp=player.maxHp}},
+ {name:'Bowstring Mastery',gift:'Permanent +1 arrow damage',take:()=>{player.archeryBonus++}},
+ {name:'Acorn Welcome',gift:'12 leaf tokens',take:()=>{player.tokens+=12}},
+ {name:'Brooklight Breath',gift:'+20 maximum stamina',take:()=>{player.maxStamina+=20;player.stamina=player.maxStamina}},
+ {name:'Forgebark Guard',gift:'Reduce nontrivial damage by one heart',take:()=>{player.wardCharm=true}},
+ {name:'Seeker’s Almanac',gift:'Reveal all shrine locations',take:()=>{for(const sh of shrines){for(let yy=Math.floor(sh.y/TILE)-1;yy<=Math.floor(sh.y/TILE)+1;yy++)for(let xx=Math.floor(sh.x/TILE)-1;xx<=Math.floor(sh.x/TILE)+1;xx++)if(explored[yy]&&xx>=0&&xx<COLS)explored[yy][xx]=true}}},
+ {name:'Melody of Endurance',gift:'+10 maximum stamina and refill',take:()=>{player.maxStamina+=10;player.stamina=player.maxStamina}},
+ {name:'Sunweaver’s Blessing',gift:'+1 permanent heart',take:()=>{player.maxHp++;player.hp=player.maxHp}},
+ {name:'Ranger’s Rations',gift:'One potion and six leaf tokens',take:()=>{player.potions++;player.tokens+=6}}
+];
+function claimHousePerk(h){
+ const i=villageHouses.indexOf(h),perk=housePerks[i];
+ if(h.perkClaimed)return;
+ h.perkClaimed=true;perk.take();
+ sparkle(player.x,player.y,'#d5ef9c',34);tone(650,.45,'triangle',.07,1.45);
+ document.getElementById('tokens').textContent='✧ '+player.tokens+' leaf tokens';
+ msg('HOUSE PERK UNLOCKED · '+perk.name+' — '+perk.gift,6);
+}
+const purchasedItems=new Set();
+function speakElf(h,index){
+ const person=h.family[index];
+ const traits={
+  'thoughtful':'The grove is my laboratory of patience. I listen before planting.',
+  'gentle':'Warm tea and time can change a hard day.',
+  'curious':'Would you tell me what the stars smell like from the mountain?',
+  'blunt botanist':'Do not rub that red leaf on your face. I mean it.',
+  'timid mapmaker':'The house has two corridors and I still need directions.',
+  'eccentric beekeeper':'My bees have voted you trustworthy. By a narrow margin.',
+  'shrewd':'I do not lower prices for compliments. Unless they are excellent.',
+  'mischievous':'I was not hiding behind the curtain. That is an outrageous rumour.',
+  'quiet':'I would rather say one true thing than twenty loud ones.',
+  'vigilant':'I saw the Guardians stir in the outer ruins. The wards held.'
+ };
+ const observed=elfDialogueTurns.get(person[0])||0;elfDialogueTurns.set(person[0],observed+1);dialogueIndex++;
+ const speech=observed%3===0?person[2]:observed%3===1?(traits[person[1]]||`${person[1][0].toUpperCase()+person[1].slice(1)} is how they describe me, but I have lived a hundred stories here.`):`I am ${person[0]}. This ${h.name.toLowerCase()} is home, and no monster crosses the Great Tree's sanctuary.`;
+ msg(`${person[0]} — ${person[1]}: ${speech}`,7);
+ if(index===0&&!h.perkClaimed)claimHousePerk(h);
+ tone(340+(index*77)%440,.11,'triangle',.032,1.15);
+ if(index===0&&marketStock[h.kind])showShop(h);
+}
+function showShop(h){const stock=marketStock[h.kind];if(!stock)return;const choices=stock.map((it,i)=>{let sold=it[3]&&purchasedItems.has(h.name+':'+i);return `<button type="button" data-buy="${i}" ${sold?'disabled':''}>${it[0]} · ${it[1]} tokens${sold?' (SOLD)':''}</button>`}).join('');const el=document.getElementById('shopOverlay');document.getElementById('shopName').textContent=h.name+' · '+player.tokens+' leaf tokens';document.getElementById('shopChoices').innerHTML=choices;el.style.display='flex';for(const btn of el.querySelectorAll('[data-buy]'))btn.onclick=()=>{let i=Number(btn.dataset.buy),it=stock[i],key=h.name+':'+i;if(it[3]&&purchasedItems.has(key)){msg('This upgrade has already been purchased.',2);return}if(player.tokens<it[1]){msg('You need '+(it[1]-player.tokens)+' more leaf tokens.',3);tone(150,.18,'sawtooth',.04,.6);return}player.tokens-=it[1];it[2]();if(it[3])purchasedItems.add(key);document.getElementById('tokens').textContent='✧ '+player.tokens+' leaf tokens';msg('PURCHASE COMPLETE — '+it[0],4);sparkle(player.x,player.y,'#f6d887',28);tone(780,.25,'triangle',.06,1.4);showShop(h)}}
+function villageInteract(){if(realm==='house'){if(Math.hypot(player.x-houseExit.x,player.y-houseExit.y)<72){leaveHouse();return true}const close=currentHouse.family.map((p,i)=>({i,d:Math.hypot(player.x-householdSpots[i][0],player.y-householdSpots[i][1])})).sort((a,b)=>a.d-b.d)[0];if(close&&close.d<85){speakElf(currentHouse,close.i);return true}msg('Walk closer to a member of the family, or return to the doorway.',3);return true}if(realm==='maze'){const h=villageHouses.find(h=>Math.hypot(player.x-h.x,player.y-(h.y+67))<57);if(h){enterHouse(h);return true}const elf=villageWalkers.find(e=>Math.hypot(player.x-e.x,player.y-e.y)<65);if(elf){msg(elf.name+' ('+elf.trait+'): '+elf.line,6);tone(520,.11,'sine',.035,1.15);return true}}return false}
+function elfAppearance(name,index,trait){
+ let h=2166136261;for(let i=0;i<name.length;i++){h=Math.imul(h^name.charCodeAt(i),16777619)>>>0}
+ const hats=['none','circlet','floral','hood','cap','headband','braid'];
+ return {skin:['#f0c7a2','#bb8566','#e9b994','#9e654e','#ddaa82','#f0d3b6'][h%6],
+ robe:['#456e66','#6d6292','#8f7051','#8b4e61','#637c53','#61769b','#a27e45','#776080','#548b85'][(h>>>4)%9],
+ hair:['#d2b56f','#49372d','#8c563d','#dfd1b1','#6d6651','#b88774','#cdc5a3','#8c735e'][(h>>>8)%8],
+ style:(h>>>12)%7,eyes:['#426d7a','#58875c','#876c46','#617b99'][(h>>>16)%4],
+ height:0.85+((h>>>18)%7)*.06,accent:['#d6b56f','#b9d7b7','#c99896','#91b6d4'][(h>>>20)%4],
+ glasses:trait.includes('scholar')||trait.includes('map')||trait.includes('archive')||trait.includes('alchemist')||((h>>>21)%11===0),
+ beard:trait.includes('veteran')||trait.includes('stoic')||trait.includes('ranger')||((h>>>24)%9===0),
+ blush:trait.includes('shy')||trait.includes('merry')||trait.includes('cheerful')};
+}
+function drawElf(x,y,name,index,trait='villager'){
+ const a=elfAppearance(name,index,trait),s=a.height;
+ ctx.save();ctx.translate(x,y+Math.sin(clock*1.8+index)*.6);ctx.scale(s,s);
+ ctx.fillStyle='#05130b99';ctx.beginPath();ctx.ellipse(0,25,15,6,0,0,7);ctx.fill();
+ // Silhouette, varied tailoring, boots, satchels and layered robe hems.
+ rect(-11,12,8,16,'#433c34');rect(4,12,8,16,'#544b3b');
+ poly([[-10,-6],[-13,12],[-16,23],[-5,28],[4,26],[14,28],[16,20],[12,-6]],a.robe);
+ poly([[-8,7],[0,5],[8,7],[6,19],[0,24],[-7,18]],a.accent);
+ for(let i=0;i<5;i++)line(-10+i*5,18,-9+i*5,23,'#d7cba65e',1);
+ poly([[-9,-8],[-17,-1],[-15,11],[-9,13],[-5,0]],a.robe);
+ poly([[9,-8],[17,-1],[15,11],[9,13],[5,0]],a.robe);
+ rect(-14,8,28,3,'#584533');rect(-3,6,6,6,'#d4ac6f');
+ circle(-15,12,3.3,a.skin);circle(15,12,3.3,a.skin);
+ // Long tapered elf ears and a face with individually selected complexion.
+ poly([[-12,-22],[-23,-20],[-12,-12]],a.skin);poly([[12,-22],[23,-20],[12,-12]],a.skin);
+ poly([[-12,-31],[-6,-36],[7,-36],[13,-31],[12,-11],[6,-7],[-6,-7],[-12,-12]],a.skin);
+ poly([[7,-10],[12,-16],[12,-12],[6,-7]],'#996c6650');
+ const hair=a.hair;
+ if(a.style===0){poly([[-14,-25],[-15,-35],[-5,-42],[8,-40],[14,-30],[8,-31],[0,-25],[-10,-28]],hair)}
+ if(a.style===1){poly([[-15,-22],[-13,-37],[2,-43],[14,-35],[16,-20],[10,-22],[7,-32],[-6,-29]],hair);poly([[11,-24],[16,2],[12,6],[8,-20]],hair)}
+ if(a.style===2){poly([[-14,-27],[-8,-40],[4,-38],[14,-29],[13,-21],[-5,-28]],hair);for(let j=0;j<4;j++)circle(-10+j*7,-33-j%2*3,6,hair)}
+ if(a.style===3){poly([[-13,-29],[-8,-39],[6,-40],[15,-29],[8,-23],[-9,-23]],hair);poly([[-12,-25],[-18,-8],[-12,-5],[-8,-24]],hair)}
+ if(a.style===4){poly([[-15,-25],[-12,-38],[4,-43],[16,-34],[13,-24],[5,-30],[-3,-24]],hair);line(0,-37,8,-20,a.accent,2)}
+ if(a.style===5){poly([[-14,-27],[-10,-35],[2,-40],[13,-32],[13,-21],[-7,-24]],hair);poly([[11,-23],[15,-9],[10,-7],[9,-20]],hair)}
+ if(a.style===6){poly([[-14,-25],[-10,-36],[0,-45],[10,-36],[16,-23],[10,-20],[-9,-22]],hair)}
+ if(a.style===1||a.style===3){for(let i=0;i<3;i++)circle(14,0+i*5,3.5,hair)}
+ if((index+name.length)%7===0){ctx.strokeStyle=a.accent;ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,-29,14,Math.PI*1.1,Math.PI*1.9);ctx.stroke()}
+ if(a.style===4){ctx.strokeStyle=a.accent;ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,-25,13,3.4,6.1);ctx.stroke()}
+ line(-8,-19,-3,-20,'#65503d',1.2);line(3,-20,8,-19,'#65503d',1.2);
+ circle(-5,-17,1.6,a.eyes);circle(5,-17,1.6,a.eyes);circle(-5,-17,.65,'#15252a');circle(5,-17,.65,'#15252a');
+ line(0,-16,-1,-12,'#a57c66',.9);line(-3,-10,3,-10,a.blush?'#c06b6b':'#865c58',1.1);
+ if(a.glasses){ctx.strokeStyle='#dbc995';ctx.lineWidth=1.3;ctx.strokeRect(-9,-21,8,7);ctx.strokeRect(1,-21,8,7);line(-1,-17,1,-17,'#dbc995',1)}
+ if(a.beard){poly([[-7,-10],[0,1],[7,-10],[4,-4],[-4,-4]],hair)}
+ if(trait.includes('music')||trait.includes('singer')||trait.includes('drummer'))line(16,4,24,-12,'#dbbd84',3);
+ if(trait.includes('bow')||trait.includes('archer')||trait.includes('ranger')){ctx.strokeStyle='#a78c65';ctx.lineWidth=2;ctx.beginPath();ctx.arc(15,0,13,-Math.PI/2,Math.PI/2);ctx.stroke()}
+ if(trait.includes('garden')||trait.includes('herbal')||trait.includes('botani'))circle(14,-3,4,'#88b76d');
+ ctx.fillStyle='#f9e7bd';ctx.font='bold 11px Nunito,sans-serif';ctx.textAlign='center';ctx.shadowColor='#06110a';ctx.shadowBlur=6;ctx.fillText(name,0,-48);
+ if(Math.hypot(player.x-x,player.y-y)<90)ctx.fillText('E · TALK',0,-61);
+ ctx.restore();
+}
+function drawSanctuary(){
+ if(realm!=='maze')return;
+ ctx.save();ctx.translate(sanctuaryCenter.x,sanctuaryCenter.y);
+ ctx.strokeStyle='#83c6a12e';ctx.lineWidth=8;ctx.setLineDash([12,20]);ctx.beginPath();ctx.arc(0,0,sanctuaryRadius,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+ for(let i=0;i<sanctuaryBells.length;i++){
+  let p=sanctuaryBells[i];if(Math.abs(p.x-player.x)>W/2+70||Math.abs(p.y-player.y)>H/2+70)continue;
+  let a=i/24*Math.PI*2,r=sanctuaryRadius-10,x=Math.cos(a)*r,y=Math.sin(a)*r;
+  ctx.shadowColor='#a5ffdc';ctx.shadowBlur=9;circle(x,y,9,'#6a8875');circle(x,y,4.8,'#b6f2c7');ctx.shadowBlur=0;
+  ctx.strokeStyle='#96c1a6';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,13,0,Math.PI*2);ctx.stroke();
+ }
+ ctx.restore();
+ if(insideSanctuary(player.x,player.y)){
+  ctx.save();ctx.fillStyle='#c3edcd';ctx.font='bold 11px Nunito';ctx.textAlign='center';ctx.shadowColor='#173b27';ctx.shadowBlur=8;
+  ctx.fillText('✦ GREAT TREE SANCTUARY · NO MONSTERS ✦',player.x,player.y-76);ctx.restore();
+ }
+}
+const houseFootprints=[
+ [[-60,-51],[-11,-51],[-11,-24],[58,-24],[58,42],[-60,42]], // L cottage
+ [[-62,-46],[-33,-46],[-33,-67],[31,-67],[31,-46],[62,-46],[62,-2],[31,-2],[31,42],[-31,42],[-31,-2],[-62,-2]], // T apothecary
+ [[-67,-39],[-48,-57],[49,-57],[67,-39],[67,23],[49,42],[-49,42],[-67,23]], // long bow hall
+ [[-66,-63],[-21,-63],[-21,-21],[21,-21],[21,-63],[66,-63],[66,42],[-66,42]], // U market
+ [[-47,-61],[6,-61],[6,-35],[51,-35],[62,-12],[62,28],[41,42],[-47,42],[-62,27],[-62,-40]], // stream house
+ [[-65,-31],[-44,-31],[-44,-60],[-6,-60],[-6,-42],[45,-42],[45,-19],[65,-19],[65,24],[45,42],[-65,42]], // smith annex
+ [[-24,-67],[24,-67],[24,-44],[59,-44],[59,8],[39,8],[39,42],[-39,42],[-39,8],[-59,8],[-59,-44],[-24,-44]], // cross library
+ [[-53,-34],[-31,-58],[30,-58],[57,-30],[63,9],[42,42],[-43,42],[-63,9]], // performance hall octagon
+ [[-43,-66],[0,-80],[43,-66],[57,-38],[57,8],[38,42],[-38,42],[-57,8],[-57,-38]], // dawn observatory
+ [[-59,-45],[-23,-45],[-23,-69],[24,-69],[24,-45],[58,-45],[58,18],[38,18],[38,42],[-38,42],[-38,18],[-59,18]] // watch lodge
+];
+function drawHouseGarden(i){
+ const flower=(x,y,c)=>{circle(x,y,5,'#2b5937');for(let a=0;a<6;a++){let t=a*Math.PI/3;circle(x+Math.cos(t)*3,y+Math.sin(t)*3,2.6,c)}circle(x,y,2,'#efd390')};
+ const plot=(x,y,w,h)=>{rect(x,y,w,h,'#4e3c2c');ctx.strokeStyle='#9a875d';ctx.lineWidth=2;ctx.strokeRect(x,y,w,h)};
+ ctx.save();ctx.globalAlpha=.95;
+ if(i===0){for(let j=0;j<4;j++){plot(-98+j*20,61,16,27);for(let k=0;k<3;k++)circle(-92+j*20,67+k*8,3,'#7da45b')}for(let k=0;k<7;k++)flower(25+k*9,76+k%2*7,'#dfbd83')}
+ if(i===1){for(let k=0;k<9;k++){let a=k*.74;circle(74+Math.cos(a)*(12+k),62+Math.sin(a)*(9+k),3.4,k%2?'#77bcb1':'#c8a2d1')}for(let k=0;k<5;k++){rect(-99+k*16,56,12,16,'#78694c');circle(-93+k*16,54,6,'#5fa383')}}
+ if(i===2){ctx.strokeStyle='#d2ae72';ctx.lineWidth=5;ctx.beginPath();ctx.arc(81,72,22,0,7);ctx.stroke();for(let k=0;k<3;k++){ctx.strokeStyle=['#a7543b','#e1d0a1','#6d8068'][k];ctx.lineWidth=3;ctx.beginPath();ctx.arc(81,72,16-k*5,0,7);ctx.stroke()}for(let k=0;k<5;k++)rect(-99+k*11,67,8,20,'#69523a')}
+ if(i===3){for(let j=0;j<3;j++){let xx=-99+j*45;rect(xx,58,35,27,'#765b3b');poly([[xx-5,58],[xx+17,42],[xx+40,58]],j%2?'#a37f4f':'#c0a66d');for(let z=0;z<5;z++)circle(xx+5+z*5,70,3,z%2?'#deca70':'#b66752')}}
+ if(i===4){ctx.fillStyle='#396f7b';ctx.beginPath();ctx.ellipse(73,80,32,21,.16,0,7);ctx.fill();ctx.strokeStyle='#91a8aa';ctx.lineWidth=3;ctx.stroke();for(let j=0;j<5;j++)circle(50+j*11,83+j%2*6,5,'#7b916a');for(let j=0;j<4;j++)circle(-83+j*12,74,4,'#a8c7b4')}
+ if(i===5){rect(70,52,28,32,'#56483f');poly([[63,54],[84,40],[105,54]],'#95583a');circle(83,65,10,'#e16b37');circle(83,65,5,'#ffd28d');rect(-102,70,37,9,'#5f6a70');rect(-90,58,12,28,'#6f787d');circle(-88,59,7,'#8e989b')}
+ if(i===6){for(let j=0;j<4;j++){rect(-102+j*24,56,20,16,'#6b5f45');line(-100+j*24,63,-84+j*24,63,'#e4cf9b',2)}for(let j=0;j<5;j++)circle(53+j*9,75+j%2*7,5,'#6b8472');flower(78,91,'#ca9ac1')}
+ if(i===7){ctx.fillStyle='#806b51';ctx.beginPath();ctx.ellipse(78,79,33,21,0,0,7);ctx.fill();for(let j=0;j<6;j++){let a=j*Math.PI/3;circle(78+Math.cos(a)*27,79+Math.sin(a)*17,5,'#b19a76')}line(62,64,62,42,'#d4b17c',2);line(62,42,91,42,'#d4b17c',2);for(let j=0;j<5;j++)flower(-96+j*12,73,'#d2a7bb')}
+ if(i===8){ctx.strokeStyle='#c1b57e';ctx.lineWidth=4;ctx.beginPath();ctx.arc(82,76,27,0,7);ctx.stroke();for(let j=0;j<8;j++){let a=j*Math.PI/4;line(82,76,82+Math.cos(a)*26,76+Math.sin(a)*26,'#aa996d',2)}circle(82,76,7,'#efd2a0');for(let j=0;j<5;j++)flower(-88+j*16,75,'#e9dda0')}
+ if(i===9){rect(70,50,33,29,'#6b573e');rect(73,32,6,45,'#a28d67');rect(93,32,6,45,'#a28d67');rect(68,28,39,7,'#afa075');line(75,46,94,46,'#b7a77d',3);for(let j=0;j<4;j++)rect(-99+j*16,66,7,24,'#705c42');line(-99,64,-42,64,'#aa8b63',2)}
+ ctx.restore();
+}
+function drawVillage(){if(realm!=='maze')return;
+ ctx.save();ctx.translate(treeSpot.x,treeSpot.y);
+ const paths=[[0,-415,0,-95],[-390,0,-85,0],[85,0,390,0],[0,100,0,420],[-300,-300,-70,-70],[300,-300,70,-70],[-295,310,-70,65],[295,310,70,65]];
+ ctx.strokeStyle='#364d37';ctx.lineWidth=45;ctx.lineCap='round';for(let [x1,y1,x2,y2] of paths){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
+ ctx.strokeStyle='#7d8265';ctx.lineWidth=18;ctx.setLineDash([8,12]);for(let [x1,y1,x2,y2] of paths){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}ctx.setLineDash([]);
+ for(let i=0;i<60;i++){let a=i*2.399,r=145+(i*37%435),px=Math.cos(a)*r,py=Math.sin(a)*r;circle(px,py,(i%9===0?7:3),i%9===0?'#507b46':i%4===0?'#e2b4a6':i%4===1?'#e8dfad':'#9cc8a3')}
+ ctx.restore();
+ for(const [i,h] of villageHouses.entries()){
+  if(Math.abs(player.x-h.x)>W/2+175||Math.abs(player.y-h.y)>H/2+180)continue;
+  ctx.save();ctx.translate(h.x,h.y);
+  drawHouseGarden(i);
+  // Ten unique walkable silhouettes and matching roofs: L, T, long hall, U, C, forge wing, cross, octagon, observatory and watchtower.
+  ctx.fillStyle='#06140aa6';ctx.beginPath();ctx.ellipse(0,39,81,29,0,0,7);ctx.fill();
+  const outline=houseFootprints[i];ctx.save();ctx.translate(0,5);poly(outline,'#443c30');ctx.restore();
+  ctx.save();ctx.beginPath();ctx.moveTo(...outline[0]);for(const pt of outline.slice(1))ctx.lineTo(...pt);ctx.closePath();ctx.clip();
+  let wood=ctx.createLinearGradient(-65,-60,70,48);wood.addColorStop(0,'#ac9778');wood.addColorStop(.5,'#786b56');wood.addColorStop(1,'#4d483e');ctx.fillStyle=wood;ctx.fillRect(-80,-95,160,150);
+  for(let yy=-72;yy<50;yy+=11)line(-75,yy,75,yy,'#4b463c',1.3);
+  for(let xx=-65;xx<70;xx+=15)line(xx,-85,xx,45,'#8a7456',1.1);
+  ctx.globalAlpha=.47;poly(outline,h.roof);ctx.globalAlpha=1;
+  ctx.restore();
+  ctx.strokeStyle='#c0a77d';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(...outline[0]);for(const pt of outline.slice(1))ctx.lineTo(...pt);ctx.closePath();ctx.stroke();
+  // Roof ridge details follow each footprint rather than covering it with the same triangular roof.
+  ctx.strokeStyle='#c7bf8c';ctx.lineWidth=2;for(let t=0;t<5;t++){let xx=-47+t*23;line(xx,-29,xx+11,-37,'#bfc18e',2)}
+  // Distinct decorative tower windows, dormers, columns, forge chimney and stage awnings.
+  if(i===1){circle(0,-48,12,'#b2d3c1');circle(0,-48,7,'#498384')}
+  if(i===2){for(let j=0;j<5;j++)rect(-47+j*20,-47,11,5,'#d7be8b')}
+  if(i===3){rect(-47,-40,22,18,'#ab8654');rect(26,-40,22,18,'#ab8654')}
+  if(i===4){circle(0,-45,10,'#90bdcc');circle(0,-45,5,'#486a79')}
+  if(i===5){rect(47,-69,12,50,'#746356');circle(53,-78,9,'#b8ad9a5e')}
+  if(i===6){rect(-17,-67,34,21,'#445c69');line(0,-66,0,-47,'#dcc6a2',2)}
+  if(i===7){for(let j=0;j<5;j++)circle(-38+j*19,-38,4,'#e5c78e')}
+  if(i===8){circle(0,-58,11,'#9bbbc2');ctx.strokeStyle='#f1e1a3';ctx.lineWidth=2;ctx.strokeRect(-15,-73,30,30)}
+  if(i===9){rect(40,-83,24,54,'#5c5f46');rect(36,-87,32,8,'#ab9972');line(44,-74,60,-74,'#dfc990',2)}
+  // Doors remain in a consistent, accessible place while the building's exterior varies.
+  rect(-15,4,30,38,'#332b26');poly([[-16,4],[0,-12],[16,4]],'#8e6d4f');
+  ctx.strokeStyle='#e3c798';ctx.lineWidth=2;ctx.strokeRect(-15,4,30,38);circle(9,22,2.5,'#ebd496');
+  for(const side of [-1,1]){let xx=side*39-9;rect(xx,-14,18,19,'#29454a');ctx.strokeStyle='#d3bd87';ctx.strokeRect(xx,-14,18,19);line(xx+9,-14,xx+9,5,'#d3bd87',1.5)}
+  ctx.fillStyle='#f2ebcb';ctx.font='bold 12px Nunito,sans-serif';ctx.textAlign='center';ctx.shadowColor='#05100a';ctx.shadowBlur=6;
+  ctx.fillText(h.name,0,-100);ctx.font='bold 10px Nunito,sans-serif';ctx.fillStyle=h.perkClaimed?'#a1d1a4':'#ebd28d';ctx.fillText((h.perkClaimed?'✓ ':'✦ ')+housePerks[i].name,0,-87);
+  if(Math.hypot(player.x-h.x,player.y-(h.y+67))<57){ctx.fillStyle='#fff7dc';ctx.font='bold 13px Nunito,sans-serif';ctx.fillText('E · ENTER',0,66)}
+  if(marketStock[h.kind]){ctx.fillStyle='#f4d67a';ctx.font='bold 11px Nunito,sans-serif';ctx.fillText('✦ SHOP',0,-116)}
+  ctx.restore();
+ }
+}
+function drawHouseFurniture(kind,x,y,plan){
+ ctx.save();ctx.translate(center(x),center(y));let a=clock;
+ function box(w,h,col,edge='#382d24'){rect(-w/2,-h/2,w,h,col);ctx.strokeStyle=edge;ctx.lineWidth=2;ctx.strokeRect(-w/2,-h/2,w,h)}
+ switch(kind){
+  case 'bed':box(62,40,'#5f4536');box(52,29,plan.rug);rect(-22,-13,19,11,'#e7d6af');break;
+  case 'table':box(59,37,'#805e40');for(let z=0;z<3;z++)circle(-17+z*17,0,4,'#deb879');break;
+  case 'hearth':box(54,54,'#5b5146');ctx.shadowColor='#ff973b';ctx.shadowBlur=16;poly([[-11,11],[-6,-10],[0,0],[10,-13],[14,12]],'#ffb350');ctx.shadowBlur=0;break;
+  case 'cauldron':circle(0,0,23,'#202c27');circle(0,0,17,'#50937d');for(let i=0;i<3;i++)circle(Math.sin(a*1.4+i)*12,Math.cos(a*1.3+i)*8,3,'#a5ebc4');break;
+  case 'forge':box(58,50,'#59443a');ctx.shadowColor='#ff8629';ctx.shadowBlur=16;rect(-19,-15,38,27,'#eb7935');ctx.shadowBlur=0;break;
+  case 'anvil':box(46,24,'#4a5660');poly([[-30,-5],[28,-12],[22,-3],[-22,5]],'#84949f');break;
+  case 'books':case 'shelves':box(53,38,'#5a4533');for(let i=0;i<6;i++)rect(-22+i*8,-14,6,28,['#9b6b58','#7d998a','#ad9e64'][i%3]);break;
+  case 'rack':case 'weapons':box(48,34,'#5f4a39');for(let i=0;i<3;i++){line(-15+i*14,-14,-15+i*14,14,'#bbc1a9',3);line(-20+i*14,7,-10+i*14,7,'#c6a574',2)}break;
+  case 'target':circle(0,0,24,'#b3a16d');circle(0,0,18,'#526450');circle(0,0,11,'#dfd2ab');circle(0,0,4,'#8c464a');break;
+  case 'loom':box(65,40,'#786343');for(let i=0;i<6;i++)line(-25+i*10,-15,-25+i*10,16,i%2?'#d2b2a8':'#8fba9e',3);break;
+  case 'piano':box(64,36,'#48323b');for(let i=0;i<8;i++)rect(-27+i*7,-4,5,12,'#e6e0ce');break;
+  case 'drum':circle(0,0,20,'#a17b50');circle(0,0,14,'#dbbd8d');line(-15,12,15,-12,'#7b5742',2);break;
+  case 'harp':ctx.strokeStyle='#e0bd80';ctx.lineWidth=5;ctx.beginPath();ctx.arc(0,0,25,-1.5,1.5);ctx.stroke();for(let i=0;i<7;i++)line(-13+i*4,-14,-13+i*4,20,'#d4bc86',1);break;
+  case 'flute':case 'quiver':box(46,25,'#66503a');for(let i=0;i<4;i++)line(-17+i*10,-10,-17+i*10,11,'#d7b575',3);break;
+  case 'stage':box(84,54,'#694e4c');ctx.strokeStyle='#dbc49b';ctx.lineWidth=3;ctx.strokeRect(-36,-20,72,40);break;
+  case 'stall':box(62,44,'#8d6540');poly([[-35,-20],[0,-38],[35,-20]],'#9d8558');for(let i=0;i<5;i++)circle(-25+i*12,4,6,i%2?'#c7ad57':'#9c654c');break;
+  case 'fruit':case 'baskets':circle(0,0,23,'#967445');for(let i=0;i<7;i++){let aa=i*2.38;circle(Math.cos(aa)*13,Math.sin(aa)*13,6,i%2?'#dcae65':'#c26c5c')}break;
+  case 'barrels':for(let i=-1;i<=1;i++){circle(i*17,0,11,'#7e5538');circle(i*17,0,8,'#ba9162')}break;
+  case 'fountain':circle(0,0,31,'#737e85');circle(0,0,24,'#398a9a');circle(0,0,8,'#a5d5db');break;
+  case 'clock':circle(0,0,25,'#b09b6f');circle(0,0,19,'#e3d6a9');line(0,0,0,-12,'#403834',2);line(0,0,10,5,'#403834',2);break;
+  case 'telescope':line(-25,10,25,-10,'#c5b57e',9);circle(20,-10,10,'#4a6068');break;
+  case 'globe':circle(0,0,22,'#467e74');line(-19,-9,19,9,'#9db4a5',2);line(0,-21,0,21,'#bbc59d',2);break;
+  case 'mortar':circle(0,0,20,'#a29b8a');circle(0,0,14,'#456f4a');line(-3,3,19,-21,'#d0b487',6);break;
+  case 'map':box(62,43,'#d2c19a');for(let i=0;i<5;i++)circle(-20+i*9,Math.sin(i*2)*12,3,'#648267');break;
+  case 'herbs':case 'plants':for(let i=0;i<5;i++){let px=-19+i*10;line(px,16,px,-11,'#597e48',2);circle(px-3,-13,7,'#71994f');circle(px+3,-8,5,'#8aab5d')}break;
+  case 'desk':case 'workbench':box(76,40,'#685035');for(let i=0;i<4;i++)circle(-27+i*18,-4,4,'#d3c6a5');break;
+  case 'bench':box(67,20,'#8c6b43');line(-29,5,-29,17,'#b49469',4);line(29,5,29,17,'#b49469',4);break;
+  case 'camp':circle(0,0,25,'#665b49');poly([[-8,12],[-3,-8],[4,2],[10,-12],[14,12]],'#dda04c');break;
+  case 'chest':box(49,34,'#876139');rect(-3,-17,6,34,'#d6b96f');rect(-25,-3,50,6,'#d6b96f');break;
+  case 'lantern':circle(0,0,21,'#716b4a');ctx.shadowColor='#f7de9b';ctx.shadowBlur=20;circle(0,0,10,'#ffe3a3');ctx.shadowBlur=0;break;
+  default:box(38,34,'#675443');
+ }
+ ctx.restore();
+}
+function drawHouseInterior(){
+ if(realm!=='house'||!currentHouse)return;
+ const plan=housePlans[villageHouses.indexOf(currentHouse)],cx=center(24),cy=center(24);
+ ctx.save();
+ for(let y=16;y<=32;y++)for(let x=15;x<=33;x++)if(grid[y][x]===0){let xx=x*TILE,yy=y*TILE;ctx.fillStyle=(x+y)%2?plan.floor:'#75634e';ctx.fillRect(xx,yy,TILE,TILE);ctx.strokeStyle='#40372b60';ctx.lineWidth=1;ctx.strokeRect(xx+2,yy+2,TILE-4,TILE-4);if((x*11+y*7)%7===0)line(xx+6,yy+29,xx+35,yy+29,'#eddaad30',1)}
+ // Draw wall rims following each distinct architectural footprint.
+ for(let y=16;y<=32;y++)for(let x=15;x<=33;x++)if(grid[y][x]===0){let xx=x*TILE,yy=y*TILE;
+  for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]])if(grid[y+dy]?.[x+dx]!==0){ctx.strokeStyle='#bda580';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(xx+(dx===1?TILE:0),yy+(dy===1?TILE:0));ctx.lineTo(xx+(dx===1?TILE:dx===-1?0:TILE),yy+(dy===1?TILE:dy===-1?0:TILE));ctx.stroke()}}
+ // Each interior has a separate furniture arrangement, floor shape and signature decor.
+ for(const [kind,x,y] of plan.decor)drawHouseFurniture(kind,x,y,plan);
+ const rx=cx-96,ry=cy+72;ctx.strokeStyle=plan.rug;ctx.lineWidth=8;ctx.strokeRect(rx,ry,192,85);
+ ctx.fillStyle='#f6eac1';ctx.font='bold 20px Cinzel';ctx.textAlign='center';ctx.shadowColor='#050a06';ctx.shadowBlur=10;ctx.fillText(currentHouse.name,cx,cy-315);
+ ctx.font='12px Nunito';ctx.fillStyle='#d1e6c6';ctx.fillText(plan.title,cx,cy-293);
+ for(let i=0;i<currentHouse.family.length;i++)drawElf(householdSpots[i][0],householdSpots[i][1],currentHouse.family[i][0],i,currentHouse.family[i][1]);
+ ctx.fillStyle='#d6f0b4';ctx.font='bold 14px Nunito';ctx.fillText('EXIT · E',houseExit.x,houseExit.y-53);
+ ctx.strokeStyle='#e6c98d';ctx.lineWidth=3;ctx.strokeRect(houseExit.x-23,houseExit.y-37,46,52);
+ ctx.restore();
+}
+function allShrinesDone(){return shrines.every(s=>s.done)}
+function claimMasterSword(){if(player.masterSword)return;player.masterSword=true;player.weapon='sword';sparkle(swordAltar.x,swordAltar.y,'#8fe4ff',80);sparkle(player.x,player.y,'#fff0b0',55);msg('THE MASTER SWORD ANSWERS YOUR COURAGE!',6);tone(392,.4,'triangle',.08,1.5);tone(784,.7,'sine',.07,1.18)}
+// Opposite corners are joined by two ancient hidden root tunnels.
+// Interacting is deliberate: simply walking nearby will never teleport Link.
+const secretPassages=[
+ {x:center(6),y:center(6),to:3,tag:'Whispering Root · Northwest',found:false},
+ {x:center(43),y:center(6),to:2,tag:'Whispering Root · Northeast',found:false},
+ {x:center(6),y:center(43),to:1,tag:'Whispering Root · Southwest',found:false},
+ {x:center(43),y:center(43),to:0,tag:'Whispering Root · Southeast',found:false}
+];
+function traverseSecretPassage(p){
+ if(realm!=='maze')return;
+ const dest=secretPassages[p.to];p.found=true;dest.found=true;
+ const ox=player.x,oy=player.y;
+ sparkle(ox,oy,'#95ffc1',32);
+ player.x=dest.x;player.y=dest.y;player.inv=Math.max(player.inv,2.2);
+ projectiles=[];arrows=[];footstep=.4;shake=8;
+ sparkle(player.x,player.y,'#b6eaa0',55);
+ for(let yy=Math.floor(player.y/TILE)-3;yy<=Math.floor(player.y/TILE)+3;yy++)for(let xx=Math.floor(player.x/TILE)-3;xx<=Math.floor(player.x/TILE)+3;xx++)if(explored[yy]&&xx>=0&&xx<COLS)explored[yy][xx]=true;
+ msg('THE HIDDEN ROOTS CARRY YOU ACROSS THE LABYRINTH!',4);
+ tone(240,.37,'triangle',.07,1.9);tone(520,.5,'sine',.065,.64);
+}
+let treeGift=0;
+function talkGreatTree(){
+ const speeches=[
+  'GREAT TREE: Young hero, seek the sacred seals and the hidden shrines. Accept my healing sap: three potions!',
+  'GREAT TREE: Even before you claim the blade of evil’s bane, a true hunter’s bow will serve you. Take my Elderwood Bow; its arrows strike harder!',
+  'GREAT TREE: Courage grows where roots endure. Receive two permanent heart containers!',
+  'GREAT TREE: Complete every shrine, and the Master Sword may be drawn from the sacred altar beside me.',
+  'GREAT TREE: Four hidden root tunnels sleep in the maze corners. Look for ivy-covered arches, and press E to cross the world.',
+  'GREAT TREE: The Ember Rift tests your spirit. Your shadow will reveal its nature there.'
+ ];
+ const step=treeGift++;
+ if(step===0)player.potions+=3;
+ if(step===1){player.elderBow=true;player.weapon='bow'}
+ if(step===2){player.maxHp+=2;player.hp=Math.min(player.maxHp,player.hp+2)}
+ msg(speeches[Math.min(step,4+(step-4)%2)],7);
+ sparkle(treeSpot.x,treeSpot.y,'#b4f59a',step<3?42:15);
+ tone(440,.3,'sine',.08,1.32);tone(660,.36,'triangle',.07,1.4);
+}
+let kills=0,questFocus=false,footstep=0,walking=false,walkPhase=0,healMusicUntil=0;
+items.push({type:'compass',x:center(25),y:center(44),r:12,t:1});
+let hasCompass=false;
+function objective(){
+ if(realm==='house')return houseExit;
+ if(realm==='lava')return lava.phase==='trials'?lavaStations[lava.step]:lava.phase==='complete'?lavaExit:shadowBoss;
+ if(realm==='dungeon'){
+  if(dungeon.stage===0)return dungeon.runes[0];if(dungeon.stage===1)return dungeon.runes[1];
+  if(dungeon.stage===2)return dungeon.guardian?.hp>0?dungeon.guardian:dungeon.crystal;
+  if(dungeon.stage===3)return dungeon.crystal;
+  return boss.dead?zelda:boss;
+ }
+ if(!player.masterSword&&allShrinesDone())return swordAltar;
+ if(questFocus){let q=npcs.find(n=>!n.done);if(q){if(q.kind==='hunt'&&kills>=5)return q;if(q.kind==='compass'&&hasCompass)return q;if(q.kind==='sage'&&player.keys>=3)return q;if(q.kind==='compass')return {x:center(25),y:center(44)};return q}}
+ const nextSeal=items.find(i=>i.type==='seal'&&!i.dead);if(nextSeal)return nextSeal;
+ if(!player.masterSword)return shrines.find(sh=>!sh.done)||swordAltar;
+ return portal; // Ember Rift is a side adventure, never a mandatory detour to Zelda.
+}
+function interact(){if(paused||ended)return;if(villageInteract())return;if(realm==='maze'){const t=hiddenYiga.find(t=>!t.revealed&&Math.hypot(player.x-t.x,player.y-t.y)<78);if(t){revealYiga(t);return}}if(realm==='lava'){lavaInteract();return}
+if(realm==='maze'&&Math.hypot(player.x-swordAltar.x,player.y-swordAltar.y)<62){if(player.masterSword){msg('The sacred altar stands empty. The Master Sword is yours.',3)}else if(allShrinesDone())claimMasterSword();else msg('The blade sleeps. Complete all three shrines to prove your worth.',4);return}
+if(realm==='maze'&&Math.hypot(player.x-treeSpot.x,player.y-treeSpot.y)<105){talkGreatTree();return}
+if(realm==='maze'){const nearby=secretPassages.find(p=>Math.hypot(player.x-p.x,player.y-p.y)<45);if(nearby){traverseSecretPassage(nearby);return}}
+if(realm==='maze'&&Math.hypot(player.x-riftPortal.x,player.y-riftPortal.y)<82){enterLava();return}if(realm==='maze'){let sh=shrines.find(z=>!z.done&&Math.hypot(z.x-player.x,z.y-player.y)<76);if(sh){openPuzzle(sh);return}}if(realm==='maze'&&player.keys===3&&Math.hypot(player.x-portal.x,player.y-portal.y)<83){startDungeonTransition();return}if(realm==='dungeon'){if(dungeonInteract())return;msg('Search for the glowing runes or defeat the dungeon guardian.',2);return}let n=npcs.find(n=>Math.hypot(n.x-player.x,n.y-player.y)<78);if(!n){msg('Move close to a villager to speak.',2);return}if(n.done){msg(n.name+': Thank you, brave Link!',3);return}if(n.kind==='hunt'&&kills>=5){n.done=true;player.potions+=2;msg(n.name+': Well fought! Take two healing potions.',4);tone(640,.35,'sine',.1,1.8)}else if(n.kind==='compass'&&hasCompass){n.done=true;player.maxHp++;player.hp=player.maxHp;msg(n.name+': You found it! Gain a permanent extra heart.',4);tone(740,.6,'triangle',.1,1.8)}else if(n.kind==='sage'&&player.keys>=3){n.done=true;player.hp=player.maxHp;msg(n.name+': The light restores all your hearts!',4);tone(540,.7,'sine',.1,1.5)}else msg(n.name+': '+n.intro+(n.kind==='hunt'?` (${kills}/5)` : ''),5)}
+const dirs=[[0,-1],[1,0],[0,1],[-1,0]];function update(dt){if(paused||puzzle)return;dt=Math.min(.034,dt);clock+=dt;if(realm==='lava')updateShadow(dt);if(transition>0){transition-=dt;if(transition<1.15&&!transitionSwapped)enterDungeon();if(transition<0)transition=0;return;}player.comboTimer=Math.max(0,player.comboTimer-dt);player.parry=Math.max(0,player.parry-dt);player.parryCooldown=Math.max(0,player.parryCooldown-dt);player.attack=Math.max(0,player.attack-dt);player.cool=Math.max(0,player.cool-dt);player.inv=Math.max(0,player.inv-dt);player.blockFlash=Math.max(0,player.blockFlash-dt);shake=Math.max(0,shake-dt*32);msgTime=Math.max(0,msgTime-dt);if(!msgTime)document.getElementById('message').style.opacity='0';player.block=!!keys.KeyK;bowCooldown=Math.max(0,bowCooldown-dt);let vx=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0),vy=(keys.KeyS||keys.ArrowDown?1:0)-(keys.KeyW||keys.ArrowUp?1:0);walking=!!(vx||vy);if(walking)walkPhase+=dt*13;if(vx||vy){player.dir=Math.abs(vx)>Math.abs(vy)?(vx>0?1:3):(vy>0?2:0);footstep-=dt;if(footstep<=0){tone(115,.035,'triangle',.008,.76);footstep=.28;}let d=Math.hypot(vx,vy),sprinting=!!(keys.ShiftLeft||keys.ShiftRight)&&!player.block&&player.stamina>1,speed=player.block?103:sprinting?285:175;player.stamina=Math.max(0,player.stamina-(sprinting?36:0)*dt);move(player,vx/d*speed*dt,vy/d*speed*dt)}if(!(vx||vy)||!(keys.ShiftLeft||keys.ShiftRight)||player.block)player.stamina=Math.min(player.maxStamina,player.stamina+23*dt);updateTravellers(dt);for(let y=Math.floor(player.y/TILE)-2;y<=Math.floor(player.y/TILE)+2;y++)for(let x=Math.floor(player.x/TILE)-5;x<=Math.floor(player.x/TILE)+5;x++)if(explored[y]&&x>=0&&x<COLS)explored[y][x]=true;
+for(let it of items){if(it.dead)continue;it.t+=dt;if(Math.hypot(it.x-player.x,it.y-player.y)<28){if(it.type==='seal'){player.keys++;msg(`Sacred seal discovered! ${player.keys} of 3`,3.2);if(player.keys===3)awakenElites();tone(520,.5,'sine',.08,1.8)}else if(it.type==='compass'){hasCompass=true;msg('Silver compass found! Return to Mira the Scout.',4);tone(820,.35,'sine',.09,1.4)}else if(it.type==='heart'){player.hp=Math.min(player.maxHp,player.hp+1);tone(580,.2,'sine',.05,1.5)}else if(it.type==='banana'){player.stamina=Math.min(player.maxStamina,player.stamina+38);player.hp=Math.min(player.maxHp,player.hp+1);msg('A mighty banana! +38 stamina and +1 heart.',2);tone(650,.15,'triangle',.05,1.4)}else{player.potions++;tone(720,.3,'triangle',.07,1.3)}it.dead=true;sparkle(it.x,it.y,'#f8d98b',22)}}
+for(let a of arrows){a.x+=a.vx*dt;a.y+=a.vy*dt;a.life-=dt;if(solid(a.x,a.y,3))a.life=0;if(a.life<=0)continue;for(let e of enemies)if(e.hp>0&&Math.hypot(a.x-e.x,a.y-e.y)<e.r+5){e.hp-=(player.elderBow?5:3)+player.archeryBonus;e.hit=.2;a.life=0;sparkle(a.x,a.y,'#ffe8ae',8);tone(310,.07,'square',.04,.6);break}if(realm==='lava'&&lava.phase==='boss'&&!shadowBoss.dead&&Math.hypot(a.x-shadowBoss.x,a.y-shadowBoss.y)<shadowBoss.r+9){shadowHit(Math.min(4,(player.elderBow?3:2)+Math.floor(player.archeryBonus/2)));a.life=0}if(realm==='dungeon'&&dungeon.stage>=4&&!boss.dead&&Math.hypot(a.x-boss.x,a.y-boss.y)<boss.r+9){boss.hp-=Math.min(3,(player.elderBow?2:1)+Math.floor(player.archeryBonus/2));boss.hit=.2;a.life=0;sparkle(a.x,a.y,'#e7a0fc',8);if(boss.hp<=0){boss.dead=true;msg('GANON FALLS! Zelda is free!',5)}}}arrows=arrows.filter(a=>a.life>0);
+for(let e of enemies){if(e.hp<=0)continue;e.hit=Math.max(0,e.hit-dt);e.attack=Math.max(0,e.attack-dt);let dx=player.x-e.x,dy=player.y-e.y,dist=Math.hypot(dx,dy)||1;
+ if(realm==='maze'&&(insideSanctuary(e.x,e.y,e.r+5)||insideSanctuary(player.x,player.y))){
+  // Sanctuary magic actively repels even a hostile that was teleported or spawned inside it.
+  if(insideSanctuary(e.x,e.y,e.r+5)){let ax=e.x-sanctuaryCenter.x,ay=e.y-sanctuaryCenter.y,dd=Math.hypot(ax,ay)||1;e.x=sanctuaryCenter.x+ax/dd*(sanctuaryRadius+e.r+18);e.y=sanctuaryCenter.y+ay/dd*(sanctuaryRadius+e.r+18)}
+  e.strikeReady=false;e.windup=0;continue;
+ }
+ e.charge=Math.max(0,(e.charge||0)-dt);e.laser=Math.max(0,(e.laser||0)-dt);e.teleport=Math.max(0,(e.teleport||0)-dt);
+ if(e.type==='stalker'&&dist<530){
+  if(e.charge<=0&&e.laser<=0){e.laserWindup=1.25;e.laser=4.8;e.charge=5.3;monsterVoice('stalker',.85);msg('GUARDIAN LOCK-ON! Take cover or raise your shield.',2)}
+  if(e.laserWindup>0){e.laserWindup-=dt;if(e.laserWindup<=0){let a=Math.atan2(dy,dx);projectiles.push({x:e.x,y:e.y,vx:Math.cos(a)*440,vy:Math.sin(a)*440,life:2,r:10,ancient:true});tone(950,.23,'sawtooth',.08,.3)}}
+ }
+ if(e.type==='wolf'&&dist<235&&e.charge<=0){e.charge=2.7;if(dist>66&&dist<165){let step=Math.min(60,dist-52);move(e,dx/dist*step,dy/dist*step);sparkle(e.x,e.y,'#bfad93',6)}monsterVoice('wolf',.55)}
+ if((e.type==='yiga'||e.type==='yigaElite')&&dist<280){
+  if(e.teleport<=0){e.teleport=e.type==='yigaElite'?2.7:4.2;let a=Math.atan2(dy,dx)+Math.PI*(.6+rand(0,.6)),tx=player.x+Math.cos(a)*105,ty=player.y+Math.sin(a)*105;if(!solid(tx,ty,e.r)&&!insideSanctuary(tx,ty,50)){sparkle(e.x,e.y,'#dc618c',10);e.x=tx;e.y=ty;sparkle(e.x,e.y,'#b8a2e6',12);msg(e.type==='yigaElite'?'YIGA BLADEMASTER: For Master Kohga!':'YIGA: BANANAS! GLORY TO MASTER KOHGA!',1.5)}}
+  if(e.charge<=0){e.charge=e.type==='yigaElite'?2.4:4;let a=Math.atan2(dy,dx);projectiles.push({x:e.x,y:e.y,vx:Math.cos(a)*260,vy:Math.sin(a)*260,life:1.8,r:7,banana:true});tone(570,.12,'triangle',.04,.45)}
+ }
+ if(dist<310){let s=e.speed*(e.type==='bat'?1.35:1);if(e.windup>0)s=0;if(e.stun>0)s=0;if(e.type==='goblin'&&dist<105)s*=-.32;if(e.type==='skeleton'&&dist>95)s*=1.6;if(e.type==='wraith')s*=1+Math.sin(clock*3+e.seed)*.35;move(e,dx/dist*s*dt,dy/dist*s*dt)}else{e.wander-=dt;if(e.wander<0){e.seed=rand(0,Math.PI*2);e.wander=rand(.6,2.4)}move(e,Math.cos(e.seed)*e.speed*.3*dt,Math.sin(e.seed)*e.speed*.3*dt)}e.windup=Math.max(0,(e.windup||0)-dt);e.stun=Math.max(0,(e.stun||0)-dt);e.guard=Math.max(0,(e.guard||0)-dt);if(e.stun>0)continue;
+if(dist<player.r+e.r+24&&e.attack<=0&&!(e.windup>0)){e.windup=e.type==='stalker'?.92:e.type==='iron'?.75:e.type==='wolf'?.30:e.type==='yigaElite'?.42:e.type==='skeleton'?.38:.53;e.attack=e.windup+1.2;e.strikeReady=true;monsterVoice(e.type,.6)}
+if(e.strikeReady&&e.windup<=0){e.strikeReady=false;if(dist<player.r+e.r+30){if(shieldCanBlock(e,8)){shieldSpend(8);if(player.parry>0){e.stun=1.5;e.hit=1.1;move(e,-dx/dist*52,-dy/dist*52);sparkle(e.x,e.y,'#fff0a0',24);tone(1180,.25,'triangle',.12,.5);msg('PERFECT PARRY! Enemy stunned.',1)}else{move(e,-dx/dist*15,-dy/dist*15);shieldClang()}}else hurt(MONSTER_DAMAGE[e.type]||1,e.x,e.y)}if(e.type==='iron')e.guard=.5} }let fallen=enemies.filter(e=>e.hp<=0);if(fallen.length){kills+=fallen.length;for(let e of fallen){
+  player.tokens+=(e.type==='stalker'?12:e.type==='yigaElite'?9:e.type==='iron'||e.type==='wraith'?5:e.type==='wolf'?3:e.type==='yiga'?4:e.type==='skeleton'?3:e.type==='goblin'?2:1);
+  if((e.type==='yiga'||e.type==='yigaElite')&&realm==='maze')items.push({type:'banana',x:e.x,y:e.y,r:11,t:0});
+  enemyDeath(e)
+ }if(fallen.length)document.getElementById('tokens').textContent='✧ '+player.tokens+' leaf tokens'}enemies=enemies.filter(e=>e.hp>0);
+let bossDist=Math.hypot(boss.x-player.x,boss.y-player.y);if(realm==='dungeon'&&dungeon.stage>=4&&!boss.dead&&bossDist<580){boss.phase+=dt;let bossStage=boss.hp>boss.max*.65?1:boss.hp>boss.max*.3?2:3;if(boss.lastStage!==bossStage){boss.lastStage=bossStage;msg(['','GANON AWAKENS — PHASE I','GANON UNLEASHES DARK MAGIC — PHASE II','GANON ENTERS HIS FINAL FURY — PHASE III'][bossStage],4);shake=14;monsterVoice('ganon',1);sparkle(boss.x,boss.y,'#d957ff',38)}boss.hit=Math.max(0,boss.hit-dt);boss.summon-=dt;boss.shoot-=dt;if(bossDist>85&&bossDist<260)move(boss,(player.x-boss.x)/bossDist*35*dt,(player.y-boss.y)/bossDist*35*dt);if(bossDist<62&&player.inv<=0){if(shieldCanBlock(boss,13)){shieldSpend(13);shieldClang()}else hurt(bossStage===3?3:2,boss.x,boss.y)}if(boss.summon<=0){boss.summon=bossStage===3?4.2:bossStage===2?5.0:6.4;const cap=bossStage===3?8:6,active=enemies.filter(e=>e.bossMinion&&e.hp>0).length;let summoned=0;for(let i=0;i<Math.min(cap-active,bossStage===3?3:bossStage===2?2:2);i++){let a=rand(0,Math.PI*2),x=boss.x+Math.cos(a)*rand(75,125),y=boss.y+Math.sin(a)*rand(75,125);if(!solid(x,y,15)){spawn(choose(['goblin','skeleton','bat']),x,y);enemies[enemies.length-1].bossMinion=true;summoned++}}if(summoned){msg('Ganon summons '+summoned+' minion'+(summoned===1?'':'s')+'!',1.7);tone(98,.5,'sawtooth',.07,1.5)}}if(boss.shoot<=0){boss.shoot=bossStage===3?1.05:bossStage===2?1.45:2.0;let a=Math.atan2(player.y-boss.y,player.x-boss.x);for(let k of (bossStage===3?[-.6,-.3,0,.3,.6]:bossStage===2?[-.35,0,.35]:[-.22,0,.22]))projectiles.push({x:boss.x,y:boss.y,vx:Math.cos(a+k)*(bossStage===3?250:195),vy:Math.sin(a+k)*(bossStage===3?250:195),life:2.6,r:8,fromGanon:true});tone(140,.24,'sawtooth',.055,.5)}}for(let p of projectiles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+ if(realm==='maze'&&insideSanctuary(p.x,p.y,p.r+15)){p.dead=true;sparkle(p.x,p.y,'#9bdfa8',5)}
+ if(solid(p.x,p.y,5))p.dead=true;if(!p.dead&&Math.hypot(p.x-player.x,p.y-player.y)<p.r+player.r){p.dead=true;if(shieldCanBlock(p,p.ancient?17:10)){shieldSpend(p.ancient?17:10);if(player.parry>0){sparkle(p.x,p.y,'#fff0a1',22);tone(1050,.2,'triangle',.1,.5);if(p.fromGanon){boss.hp=Math.max(0,boss.hp-1);if(boss.hp===0){boss.dead=true;sparkle(boss.x,boss.y,'#f5c170',80);msg('GANON IS DEFEATED! ZELDA’S PRISON IS OPEN!',4)}else msg('GANON’S MAGIC REFLECTED!',1.4)}else msg('PERFECT PROJECTILE PARRY!',1.4)}else{sparkle(p.x,p.y,'#a7dafa',8);shieldClang()}}else hurt(p.ancient?4:p.banana?2:p.shadow?(shadowBoss.stage>=3?3:2):(boss.hp<boss.max*.3?3:2),p.x,p.y)}}projectiles=projectiles.filter(p=>p.life>0&&!p.dead);for(let p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.95;p.vy*=.95;p.life-=dt}particles=particles.filter(p=>p.life>0);for(let b of deathBursts){b.life-=dt;b.r+=dt*135}deathBursts=deathBursts.filter(b=>b.life>0);if(realm==='dungeon'&&Math.hypot(player.x-zelda.x,player.y-zelda.y)<44){if(boss.dead&&dungeon.stage===4)finish(true);else if(msgTime<.5)msg(boss.dead?'Zelda: “Break the three dungeon locks to free me!”':'Zelda: “Link! Ganon must be defeated first!”',3)}document.getElementById('staminaFill').style.width=(player.stamina/player.maxStamina*100)+'%';document.getElementById('staminaValue').textContent=Math.round(player.stamina)+' / '+player.maxStamina;document.getElementById('hearts').textContent='♥'.repeat(Math.max(0,player.hp))+'♡'.repeat(Math.max(0,player.maxHp-player.hp));document.getElementById('potions').textContent='✦ '+player.potions+' potions';document.getElementById('keys').textContent=realm==='lava'?'♨ '+lava.step+' / 6 trials':'⚿ '+player.keys+' / 3 seals';document.getElementById('boss').firstChild.textContent=realm==='lava'?'SHADOW LINK — THE RED-EYED MIRROR':'GANON, LORD OF SHADOWS';document.getElementById('boss').style.display=realm==='lava'&&lava.phase==='boss'&&!shadowBoss.dead||realm==='dungeon'&&dungeon.stage>=4&&!boss.dead&&bossDist<490?'block':'none';document.getElementById('bossfill').style.width=(100*(realm==='lava'?shadowBoss.hp/shadowBoss.max:boss.hp/boss.max))+'%';}
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x,y,w,h)}function circle(x,y,r,c){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}function poly(points,col){ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(...points[0]);for(let p of points.slice(1))ctx.lineTo(...p);ctx.closePath();ctx.fill()}function line(x,y,xx,yy,col,w=2){ctx.strokeStyle=col;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(xx,yy);ctx.stroke()}
+// A single equipped weapon is visible. The hero's sprite itself never rotates.
+function detailedMasterSword(){
+ ctx.save();ctx.shadowColor='#6cc7f4';ctx.shadowBlur=7;
+ // Blade points along positive local X; a wide, flat double-edged leaf blade, not a spear.
+ poly([[12,-6],[16,-9],[26,-9],[30,-7],[48,-7],[59,-4],[68,0],[59,4],[48,7],[30,7],[26,9],[16,9],[12,6]],'#a6d7ec');
+ poly([[17,0],[27,-6],[49,-4],[64,0],[49,4],[27,6]],'#eef8ff');
+ line(24,0,62,0,'#83a8c5',1.7);line(30,-6,49,-4,'#fff',1.5);
+ ctx.shadowBlur=0;
+ // Iconic winged indigo crossguard with golden centre.
+ poly([[10,-5],[5,-15],[-5,-21],[-2,-11],[1,-5],[1,5],[-2,11],[-5,21],[5,15],[10,5]],'#394d9f');
+ poly([[6,-7],[2,-14],[-1,-15],[2,-4]],'#a4afff');
+ poly([[6,7],[2,14],[-1,15],[2,4]],'#a4afff');
+ rect(-16,-3,17,6,'#33479a');
+ for(let i=-13;i<0;i+=5)line(i,-3,i+3,3,'#b6a3ea',1.6);
+ poly([[-22,0],[-18,-5],[-15,0],[-18,5]],'#d5b66f');
+ poly([[0,-5],[6,0],[0,5],[-6,0]],'#d8b24d');circle(0,0,2.1,'#7be3f5');
+ ctx.restore();
+}
+function detailedBow(){
+ ctx.save();ctx.strokeStyle='#8a542d';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-9,-24);ctx.quadraticCurveTo(20,-15,13,0);ctx.quadraticCurveTo(20,15,-9,24);ctx.stroke();
+ ctx.strokeStyle='#f1c97b';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(-9,-24);ctx.lineTo(-6,0);ctx.lineTo(-9,24);ctx.stroke();
+ for(let y of [-18,18]){poly([[-8,y-4],[-3,y-1],[-7,y+5]],'#d1b36e')}
+ line(11,-3,14,3,'#ecd08e',2);circle(13,0,2.5,'#60d0aa');ctx.restore();
+}
+function detailedShield(){
+ ctx.save();ctx.translate(-17,4);ctx.shadowColor='#9aeaff';ctx.shadowBlur=player.blockFlash>0?23:4;
+ poly([[-12,-15],[0,-21],[12,-15],[12,7],[0,20],[-12,7]],'#ae8350');
+ poly([[-9,-13],[0,-17],[9,-13],[9,5],[0,15],[-9,5]],'#30549e');
+ poly([[-7,-10],[0,-13],[7,-10],[7,0],[0,11],[-7,0]],'#3459a5');
+ poly([[-8,-11],[0,-16],[8,-11]],'#cdd8d8');
+ poly([[-7,-2],[0,2],[7,-2],[0,9]],'#b84049');
+ poly([[-4,-8],[0,-11],[4,-8],[0,-3]],'#f1df99');
+ line(-8,4,0,14,'#dfbb6e',1.5);line(8,4,0,14,'#dfbb6e',1.5);
+ ctx.restore();
+}
+// Link's full-body cast silhouette. It grows darker and acquires eyes with each Ember trial.
+function drawLinkShadow(){
+ const progress=realm==='lava'?Math.min(1,lava.step/6):0;
+ if(realm==='lava'&&(lava.phase==='boss'||lava.phase==='complete'))return;
+ let splitting=realm==='lava'&&lava.phase==='detach';
+ let detachProgress=splitting?Math.max(0,Math.min(1,(3.8-lava.detaching)/3.8)):0;
+ // Feet stay anchored beneath Link at (0, 27). A diagonal cast stretches the silhouette up-left.
+ // Only the detachment sequence breaks this contact and pulls the shadow away.
+ ctx.save();ctx.translate(-30-detachProgress*35,5+detachProgress*8);
+ ctx.transform(1,0,1.06,.78+detachProgress*.16,0,0);
+ ctx.globalAlpha=Math.min(1,.52+progress*.43+detachProgress*.06);
+ ctx.shadowColor=progress>.35?'#a01121':'#03030b';ctx.shadowBlur=2+progress*8;
+ const dark=progress>.72?'#010007':progress>.30?'#05040a':'#151d1b';
+ // Boots and separate legs, with a subtle echo of Link's actual walking cycle.
+ const stride=walking?Math.sin(walkPhase)*4:0;
+ poly([[-10,9],[-12,25+stride],[-4,30+stride],[-1,12]],dark);
+ poly([[3,10],[3,29-stride],[12,29-stride],[11,11]],dark);
+ // Tunic, shoulders, extended arms and their unmistakable hand shapes.
+ poly([[-11,-4],[-17,-1],[-20,15],[-14,18],[-9,7],[-12,17],[12,17],[9,7],[15,18],[21,14],[17,-1],[10,-5]],dark);
+ // Pointed elf ears, head and signature long swept-back cap.
+ circle(0,-11,11,dark);
+ poly([[-9,-15],[-20,-13],[-11,-7]],dark);
+ poly([[9,-15],[20,-13],[11,-7]],dark);
+ // Swept-back hair crown and loose side locks reproduce Link's visible hairstyle.
+ poly([[-13,-17],[-13,-29],[-5,-35],[6,-35],[14,-29],[14,-20],[8,-22],[4,-18],[-6,-19]],dark);
+ poly([[-12,-22],[-16,-10],[-11,-8],[-8,-18]],dark);
+ poly([[10,-23],[16,-9],[10,-7],[8,-17]],dark);
+ // Sword/shield silhouette is held beside, not over, the face.
+ if(player.weapon==='bow'){
+  ctx.strokeStyle=dark;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(21,-21);ctx.quadraticCurveTo(39,-4,21,16);ctx.stroke();
+  line(21,-21,21,16,dark,1.8);
+ }else{
+  poly([[16,5],[19,3],[22,-20],[25,-25],[27,-20],[25,4],[28,8],[15,9]],dark);
+  line(13,8,29,8,dark,4);
+ }
+ // The eyes first flicker after two trials, then steadily burn brighter.
+ const eyePower=progress<=.28?0:Math.min(1,(progress-.28)/.52);
+ if(eyePower>0){
+  const flicker=(.78+.22*Math.sin(clock*(7+progress*6)));
+  ctx.globalAlpha=Math.min(1,eyePower*flicker);
+  ctx.shadowColor='#ff2337';ctx.shadowBlur=4+eyePower*15;
+  circle(-4,-12,1.15+eyePower*1.2,'#ff3043');
+  circle(4,-12,1.15+eyePower*1.2,'#ff3043');
+ }
+ ctx.restore();
+}
+
+function drawShadowLinkFigure(detach=0,bossMode=false){
+ const dark=bossMode?'#0a0710':'#121018';
+ const deep=bossMode?'#040107':'#07050b';
+ const red= bossMode?'#ff3147':'#ff263c';
+ ctx.save();
+ if(!bossMode){ctx.globalAlpha=.75+.22*detach;ctx.scale(1+.08*detach,1+.05*detach)}
+ circle(0,14,18,deep);
+ const leg=bossMode?0:Math.sin(clock*8)*1.4;
+ poly([[-11,9],[-14,26+leg],[-5,31+leg],[-1,13]],dark);
+ poly([[3,10],[3,30-leg],[13,30-leg],[11,12]],dark);
+ poly([[-12,-4],[-18,-1],[-20,15],[-13,18],[-9,7],[-13,17],[13,17],[10,7],[16,18],[22,14],[18,-1],[10,-5]],dark);
+ circle(0,-11,12,dark);
+ poly([[-10,-15],[-21,-13],[-12,-7]],dark);poly([[10,-15],[21,-13],[12,-7]],dark);
+ poly([[-14,-17],[-14,-30],[-5,-36],[6,-36],[15,-30],[15,-20],[8,-23],[4,-19],[-6,-20]],dark);
+ poly([[-11,-23],[-16,-10],[-11,-8],[-8,-18]],dark);poly([[10,-23],[16,-9],[10,-7],[8,-17]],dark);
+ ctx.strokeStyle='#2a2333';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(-9,-27);ctx.lineTo(-1,-33);ctx.lineTo(9,-31);ctx.stroke();
+ circle(-5,-12,2.2+detach*.6,red);circle(5,-12,2.2+detach*.6,red);
+ ctx.shadowColor=red;ctx.shadowBlur=6+detach*10;circle(-5,-12,.9+detach*.6,red);circle(5,-12,.9+detach*.6,red);ctx.shadowBlur=0;
+ if((bossMode?shadowBoss.block:0)>0){ctx.strokeStyle='#d45a8a';ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,1,27,0,Math.PI*2);ctx.stroke()}
+ if(player.weapon==='bow' || bossMode&&shadowBoss.stage>=2){ctx.strokeStyle='#675274';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(20,-20);ctx.quadraticCurveTo(38,-4,20,17);ctx.stroke();line(20,-20,20,17,'#9d83b2',1.5)}
+ else{poly([[16,5],[19,3],[22,-20],[25,-25],[27,-20],[25,4],[28,8],[15,9]],'#9d7bb2');line(13,8,29,8,'#c7b0da',3)}
+ if((bossMode?shadowBoss.anim:0)>0){ctx.save();ctx.globalAlpha=.85;ctx.strokeStyle='#f66c9b';ctx.lineWidth=6;ctx.beginPath();ctx.arc(0,0,50,-Math.PI*.65,Math.PI*.13);ctx.stroke();ctx.restore()}
+ ctx.restore();
+}
+
+function hero(x,y){ctx.save();ctx.translate(x,y);if(player.inv>0&&Math.floor(clock*16)%2===0)ctx.globalAlpha=.45;
+ drawLinkShadow();
+ // Detailed green-clad adventurer, front-facing regardless of movement direction.
+ const stride=walking&&!player.block?Math.sin(walkPhase)*5:0;
+ const bob=walking?Math.abs(Math.sin(walkPhase))*.8:0;
+ ctx.save();ctx.translate(0,-bob);
+ // Separate tapered leather boots, trousers and leg guards.
+ poly([[-10,10],[-2,11],[-3,21+stride],[-10,23+stride]],'#545447');
+ poly([[2,11],[10,10],[10,23-stride],[3,21-stride]],'#4b5040');
+ poly([[-11,19+stride],[-3,19+stride],[-3,28+stride],[-12,29+stride],[-14,26+stride]],'#674332');
+ poly([[3,19-stride],[11,19-stride],[14,26-stride],[11,29-stride],[3,28-stride]],'#674332');
+ line(-10,22+stride,-4,23+stride,'#a67e56',1.5);line(4,23-stride,11,22-stride,'#a67e56',1.5);
+ // Belt pouches, undershirt, asymmetric leather strap and layered green tunic.
+ poly([[-10,-4],[10,-4],[13,14],[6,18],[0,15],[-6,18],[-13,14]],'#1d5138');
+ poly([[-11,-5],[0,-8],[11,-5],[10,10],[0,13],[-10,10]],'#317b48');
+ poly([[-9,-3],[0,-6],[8,-3],[7,7],[-7,9]],'#449762');
+ poly([[-10,10],[0,12],[10,10],[13,18],[1,15],[-12,19]],'#246a42');
+ line(-8,11,8,11,'#d0b97a',2.4);rect(-4,9,8,5,'#bd9657');rect(-2,10,4,3,'#f4d797');
+ line(-7,1,7,8,'#765332',2.8);line(-6,1,8,8,'#bb9260',1);
+ rect(8,9,6,7,'#75533c');circle(11,11,1.3,'#d9c088');
+ // Sleeves, bracers and fingered hands.
+ poly([[-10,-5],[-16,-2],[-18,8],[-12,11],[-7,4]],'#338056');
+ poly([[10,-5],[16,-2],[18,8],[12,11],[7,4]],'#286b48');
+ poly([[-17,5],[-19,11],[-14,13],[-11,9]],'#806043');
+ poly([[17,5],[19,11],[14,13],[11,9]],'#806043');
+ circle(-16,12,3.4,'#d9aa7c');circle(16,12,3.4,'#d9aa7c');
+ line(-14,5,-18,6,'#d1af74',1.1);line(13,5,17,6,'#c7a571',1.1);
+ // Long neck, elf ears, shaped jaw and warm skin shadows.
+ rect(-5,-17,10,8,'#c89469');
+ poly([[-12,-18],[-20,-17],[-12,-11]],'#e8b883');
+ poly([[12,-18],[20,-17],[12,-11]],'#e8b883');
+ poly([[-12,-23],[-8,-29],[8,-29],[12,-23],[11,-12],[6,-7],[-6,-7],[-11,-12]],'#eec69a');
+ poly([[7,-12],[11,-19],[10,-12],[5,-8]],'#d5a57b');
+ // Swept blond hair, textured bangs and longer side locks, Breath of the Wild inspired.
+ poly([[-14,-22],[-12,-30],[-5,-34],[5,-34],[13,-29],[13,-21],[7,-25],[3,-22],[-3,-24],[-8,-20]],'#d9ae59');
+ poly([[-10,-29],[-1,-35],[9,-32],[5,-26],[-3,-20],[-9,-21]],'#f5d181');
+ poly([[-12,-26],[-15,-16],[-12,-9],[-9,-13],[-8,-22]],'#dbb05e');
+ poly([[11,-26],[14,-15],[10,-8],[8,-14],[8,-22]],'#dfb96a');
+ line(-7,-30,2,-32,'#fff1aa',1.4);line(-4,-23,3,-29,'#b88a44',1.2);
+ // Eyes, eyebrows, nose and a tiny determined expression.
+ line(-8,-19,-3,-20,'#8b663d',1.3);line(3,-20,8,-19,'#8b663d',1.3);
+ circle(-5,-17,1.6,'#528c9e');circle(5,-17,1.6,'#528c9e');
+ circle(-5,-17,.7,'#162d33');circle(5,-17,.7,'#162d33');
+ line(0,-16,-1,-12,'#b88568',.9);line(-3,-10,3,-10,'#9c665e',1);
+ // Neck scarf, embroidered edging, shoulder pin and tunic stitching.
+ poly([[-8,-8],[-4,-12],[0,-8],[4,-12],[8,-8],[3,-5],[-3,-5]],'#e1d7b4');
+ line(-10,-3,-10,8,'#a8b97e',1);line(10,-3,10,8,'#a8b97e',1);
+ for(let yy=0;yy<7;yy+=3){line(-8,yy,-6,yy+1,'#a8cd92',.8);line(7,yy+1,9,yy,'#a8cd92',.8)}
+ circle(9,-5,2,'#c4b16b');circle(9,-5,.8,'#ebda9a');
+ ctx.restore();
+
+ // Only the active weapon is drawn. K raises shield over the equipped weapon.
+ if(player.block){detailedShield()}
+ else if(player.weapon==='bow' || !player.masterSword){ctx.save();ctx.translate(18,3);detailedBow();ctx.restore()}
+ else if(player.attack>0){
+   let progress=Math.max(0,Math.min(1,1-player.attack/.27));
+   // Ease into the cut, accelerate through its middle, then decelerate for follow-through.
+   let eased=progress<.5?4*progress*progress*progress:1-Math.pow(-2*progress+2,3)/2;
+   let face=[-Math.PI/2,0,Math.PI/2,Math.PI][player.dir];
+   let a=face-Math.PI/4+eased*Math.PI/2;
+   ctx.save();ctx.rotate(a);ctx.translate(11,0);
+   // Blade trail tapers behind the current angle; no full circle or permanent glowing ring.
+   ctx.restore();
+   ctx.save();ctx.globalAlpha=.5*(1-progress);ctx.strokeStyle='#b8eaff';ctx.lineWidth=9;ctx.shadowColor='#84d1ff';ctx.shadowBlur=12;ctx.beginPath();ctx.arc(0,0,68,face-Math.PI/4, a);ctx.stroke();ctx.restore();
+   ctx.save();ctx.rotate(a);ctx.translate(13,0);detailedMasterSword();ctx.restore();
+ }else if(player.masterSword){ctx.save();ctx.translate(18,5);ctx.rotate(-Math.PI/3);ctx.scale(.68,.68);detailedMasterSword();ctx.restore()}
+ ctx.restore()}
+function monster(e){let {x,y,type}=e;ctx.save();ctx.translate(x,y+Math.sin(clock*5+e.seed)*2);if(e.hit>0)ctx.filter='brightness(3)';circle(0,13,e.r,'#02080677');
+ if(type==='stalker'){
+  // Eight articulated Guardian spider legs, rotating mechanical carapace and single ancient eye.
+  ctx.save();ctx.rotate(Math.sin(clock*.35+e.seed)*.035);
+  for(let k=0;k<8;k++){
+   let a=k*Math.PI/4+(clock*.7+e.seed)*.02,reach=e.r+10+Math.sin(clock*7+k)*2;
+   let sx=Math.cos(a)*12,sy=Math.sin(a)*12,ex=Math.cos(a)*reach,ey=Math.sin(a)*reach;
+   line(sx,sy,Math.cos(a)*22-Math.sin(a)*3,Math.sin(a)*22+Math.cos(a)*3,'#827d65',8);
+   line(Math.cos(a)*22-Math.sin(a)*3,Math.sin(a)*22+Math.cos(a)*3,ex,ey,'#a69d78',6);
+   circle(ex,ey,4,'#4d544c');circle(ex*.75,ey*.75,2,'#e3b96b');
+  }
+  circle(0,0,22,'#766d50');circle(0,0,18,'#c0b58a');
+  for(let i=0;i<8;i++){let a=i*Math.PI/4;poly([[Math.cos(a)*12,Math.sin(a)*12],[Math.cos(a+.25)*18,Math.sin(a+.25)*18],[Math.cos(a-.25)*18,Math.sin(a-.25)*18]],'#668578')}
+  ctx.strokeStyle='#5e7770';ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(0,0,15,0,Math.PI*2);ctx.stroke();
+  circle(0,0,11,'#273941');ctx.shadowColor=e.laserWindup>0?'#ff453e':'#e5574b';ctx.shadowBlur=e.laserWindup>0?27:14;circle(0,0,7,'#e65341');circle(0,0,3,'#fff3be');ctx.shadowBlur=0;
+  if(e.laserWindup>0){
+   ctx.strokeStyle='#ff4a38';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,33,clock*4,clock*4+Math.PI*1.7);ctx.stroke();
+   ctx.globalAlpha=.3+.4*Math.sin(clock*13)**2;
+   ctx.strokeStyle='#ff332b';ctx.lineWidth=1.5+(1.25-e.laserWindup)*2;
+   ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(player.x-e.x,player.y-e.y);ctx.stroke();ctx.globalAlpha=1;
+  }
+  ctx.restore();
+ }
+ if(type==='wolf'){
+  const fur=e.seed%3>1?'#777f7c':'#96846f';let pant=Math.sin(clock*9+e.seed)*1.5;
+  poly([[-19,-3],[-12,-12],[10,-12],[18,-2],[15,14],[-17,13]],fur);
+  poly([[-8,-14],[-6,-25],[-1,-20],[5,-24],[9,-13]],'#a69b83');
+  poly([[-14,-10],[-20,-23],[-5,-18]],'#6e6d60');poly([[14,-10],[21,-23],[5,-18]],'#777469');
+  rect(-16,10,7,10+pant,'#6b6254');rect(8,10,7,10-pant,'#6b6254');
+  poly([[-9,2],[0,9],[9,2],[0,14]],'#cfbca0');circle(-6,-8,2,'#f0d88a');circle(6,-8,2,'#f0d88a');poly([[-4,6],[0,8],[4,6]],'#292b28');
+  ctx.strokeStyle='#b4a48d';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(13,8);ctx.quadraticCurveTo(28,15,23,25+pant);ctx.stroke();
+ }
+ if(type==='yiga'||type==='yigaElite'){
+  let chief=type==='yigaElite';ctx.scale(chief?1.15:1,chief?1.15:1);
+  poly([[-13,-2],[-17,15],[-7,21],[7,21],[17,15],[13,-2]],chief?'#7a172e':'#9d2637');
+  poly([[-11,-16],[0,-24],[11,-16],[9,4],[0,12],[-9,4]],'#2e2230');
+  circle(0,-12,12,'#e7d5b9');circle(0,-12,10,'#e9e1cf');
+  // Reversed-eye mask and exaggerated red scarf, identifiable ninja rather than goblin.
+  poly([[-8,-14],[0,-18],[8,-14],[0,-11]],'#d24343');circle(0,-14,3,'#6c1c2d');
+  poly([[-12,-19],[-5,-29],[4,-29],[13,-18]],chief?'#622336':'#893141');
+  poly([[-18,-3],[-25,2],[-18,9],[-10,3]],'#a32d44');poly([[18,-3],[25,2],[18,9],[10,3]],'#a32d44');
+  rect(-10,18,8,9,'#34313a');rect(4,18,8,9,'#34313a');
+  if(chief){line(18,6,27,-7,'#d8b36f',4);line(27,-7,31,-19,'#dfe9e1',5)}
+  else{poly([[16,0],[24,-6],[29,-3],[22,4]],'#ebd75e');circle(26,-7,4,'#e2b843')}
+  ctx.fillStyle='#f4df92';ctx.font='bold 9px Nunito,sans-serif';ctx.textAlign='center';ctx.fillText(chief?'BLADEMASTER':'YIGA',0,-35);
+ }
+ if(type==='slime'){circle(0,1,13,'#51b483');circle(-4,-3,3,'#e3f7d0');circle(5,-3,3,'#e3f7d0');circle(-4,-3,1,'#101f1a');circle(5,-3,1,'#101f1a');poly([[-11,4],[0,10],[11,4]],'#2b865e')}if(type==='bat'){poly([[-3,0],[-25,-12],[-22,7],[-12,3],[-5,13],[0,0],[6,13],[13,4],[22,7],[25,-12],[4,0]],'#71568f');circle(0,0,8,'#9474b0');circle(-4,-2,2,'#ff727c');circle(4,-2,2,'#ff727c')}if(type==='goblin'){poly([[-9,2],[-18,-5],[-10,-10],[-7,-13],[7,-13],[10,-10],[18,-5],[9,2],[10,14],[-10,14]],'#769b43');circle(0,-4,10,'#9fb65d');circle(-4,-5,2,'#e95c53');circle(4,-5,2,'#e95c53');rect(-6,14,5,6,'#4a4735');rect(3,14,5,6,'#4a4735')}if(type==='wraith'){ctx.shadowColor='#9d6afa';ctx.shadowBlur=13;poly([[-14,12],[-17,-4],[-9,-18],[0,-23],[11,-16],[17,0],[13,14],[5,9],[-3,17]],'#7357a9');circle(-5,-6,3,'#aff6fa');circle(5,-6,3,'#aff6fa');ctx.shadowBlur=0}if(type==='iron'||type==='guardian'){let big=type==='guardian',c=big?'#b96564':'#7f96ac';poly([[-16,-5],[-11,-19],[11,-19],[16,-5],[17,16],[-17,16]],c);rect(-10,-21,20,12,'#c5d6dc');rect(-8,-14,6,4,'#f76362');rect(3,-14,6,4,'#f76362');rect(-10,15,7,9,'#43525f');rect(4,15,7,9,'#43525f');if(big){ctx.strokeStyle='#ffb75d';ctx.lineWidth=3;ctx.strokeRect(-22,-26,44,53)}}if(type==='skeleton'){rect(-9,2,18,16,'#7c7e7b');circle(0,-8,12,'#d6d1b5');rect(-7,-5,5,5,'#27302d');rect(3,-5,5,5,'#27302d');rect(-5,1,10,5,'#a9a08b');line(-6,9,6,9,'#e1dcca',2);line(-3,7,-3,14,'#e1dcca',2);line(3,7,3,14,'#e1dcca',2)}
+ if(type==='slime'){for(let k=-1;k<=1;k++)circle(k*7,5+(k%2)*2,2,'#9ef1c6');ctx.strokeStyle='#b5ffe2';ctx.lineWidth=1;ctx.beginPath();ctx.arc(-4,-5,7,3.6,5.5);ctx.stroke()}
+ if(type==='bat'){let wing=Math.sin(clock*12+e.seed)*4;line(-22,-7+wing,-12,-1,'#c3a1dd',1);line(22,-7+wing,12,-1,'#c3a1dd',1);poly([[-3,5],[-1,11],[1,5]],'#ead3ce');poly([[3,5],[5,11],[7,5]],'#ead3ce');circle(0,4,2,'#4b2b5b')}
+ if(type==='goblin'){poly([[-10,3],[-5,8],[6,8],[10,3],[7,17],[-8,17]],'#694835');line(-6,7,6,7,'#c8ad6a',2);poly([[-7,0],[-4,5],[-1,0]],'#f4e2ba');poly([[4,0],[7,5],[10,0]],'#f4e2ba');line(-4,-12,4,-12,'#445b2c',2);circle(-13,6,3,'#b9a16b')}
+ if(type==='skeleton'){for(let k=0;k<3;k++)line(-7,8+k*4,7,8+k*4,'#eee6cd',1);poly([[-11,-14],[-6,-22],[5,-20],[11,-15]],'#8c8876');line(-13,3,-19,14,'#d5d0b7',3);line(13,3,19,14,'#d5d0b7',3)}
+ if(type==='wraith'){ctx.globalAlpha=.75;for(let k=-1;k<=1;k++){line(k*7,5,k*9,17+Math.sin(clock*5+k)*5,'#b89ef8',1.7)}circle(0,-16,3,'#dbc6ff');ctx.globalAlpha=1}
+ if(type==='iron'||type==='guardian'){line(-12,-7,12,-7,'#e1e9eb',2);for(let k=-1;k<=1;k++)rect(k*8-2,0,4,8,'#546879');circle(0,5,4,type==='guardian'?'#ffb75d':'#8be0f1');rect(-20,-3,5,15,'#d0c4aa');rect(15,-3,5,15,'#d0c4aa');poly([[-10,-21],[0,-28],[10,-21]],'#c7d5dc')}
+ ctx.restore()}
+// Ancient root portals conceal a diagonal passage between opposing corners.
+function drawSecretPassage(p,idx){
+ if(realm!=='maze')return;
+ if(Math.abs(player.x-p.x)>W/2+100||Math.abs(player.y-p.y)>H/2+100)return;
+ const discovered=Math.hypot(player.x-p.x,player.y-p.y)<170||p.found;
+ const pulse=.5+.5*Math.sin(clock*2+idx*1.7);
+ ctx.save();ctx.translate(p.x,p.y);
+ // Deep stone threshold and cracked archway, partly hidden by foliage.
+ ctx.fillStyle='#08190f';ctx.beginPath();ctx.ellipse(0,13,27,20,0,0,Math.PI*2);ctx.fill();
+ for(let k=-1;k<=1;k++){let ox=k*18;ctx.fillStyle=k===0?'#47584a':'#3d4e43';ctx.fillRect(ox-7,-24,14,30);line(ox-7,-24,ox+6,-24,'#72856b',2);line(ox-3,-18,ox+1,-9,'#25392d',1)}
+ ctx.strokeStyle='#65715d';ctx.lineWidth=7;ctx.beginPath();ctx.arc(0,-8,28,Math.PI*1.06,Math.PI*1.94);ctx.stroke();
+ ctx.strokeStyle='#293b2b';ctx.lineWidth=3;
+ for(let i=0;i<5;i++){let xx=-28+i*13;ctx.beginPath();ctx.moveTo(xx,-29);ctx.bezierCurveTo(xx+8,-19,xx-5,-6,xx+3,12);ctx.stroke();
+ circle(xx+4,-11,3,'#517c48');circle(xx-1,0,3,'#6e915c')}
+ ctx.globalAlpha=discovered?.3+.35*pulse:.08;
+ ctx.shadowColor='#c5e69c';ctx.shadowBlur=20;
+ circle(0,0,10,discovered?'#b6e8a8':'#284d31');
+ ctx.globalAlpha=1;ctx.shadowBlur=0;
+ if(discovered){ctx.fillStyle='#e8eabb';ctx.font='bold 11px Nunito,sans-serif';ctx.textAlign='center';ctx.shadowColor='#061008';ctx.shadowBlur=6;
+ ctx.fillText('HIDDEN ROOT',0,-43);
+ if(Math.hypot(player.x-p.x,player.y-p.y)<45)ctx.fillText('E · TRAVEL',0,36)}
+ ctx.restore();
+}
+// A Deku-like tree sage, painted in layered bark, knotted roots, leaf clusters and shaded wood.
+// This is entirely original canvas art, designed for the game's illustrated 2D perspective.
+function drawGreatTree(){
+ if(Math.abs(player.x-treeSpot.x)>W/2+240||Math.abs(player.y-treeSpot.y)>H/2+220)return;
+ const sw=Math.sin(clock*1.1),blink=Math.sin(clock*.61)> .996;
+ ctx.save();ctx.translate(treeSpot.x,treeSpot.y);
+ // Korok-inspired hidden village clearing, with treehouses, lanterns and rope-worn platforms.
+ ctx.fillStyle='#0a1b1277';ctx.beginPath();ctx.ellipse(0,26,172,92,0,0,7);ctx.fill();
+ ctx.strokeStyle='#76976844';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(0,16,148,72,0,0,7);ctx.stroke();
+ // The actual ten full-size village homes are rendered separately as enterable buildings.
+ for(let i=0;i<6;i++){let lx=-130+i*50,ly=i%2?64:-96;ctx.strokeStyle='#3f5d3f';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(lx,ly+22);ctx.stroke();ctx.shadowColor='#f7da91';ctx.shadowBlur=14;circle(lx,ly+24,4,'#e8d792');ctx.shadowBlur=0}
+ ctx.strokeStyle='#6c7b62';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(-112,18);ctx.lineTo(-42,18);ctx.lineTo(36,18);ctx.lineTo(96,18);ctx.stroke();ctx.strokeStyle='#354536';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-111,20);ctx.lineTo(-43,20);ctx.moveTo(36,20);ctx.lineTo(97,20);ctx.stroke();
+ // Sacred altar for the Master Sword beside the Great Tree.
+ ctx.save();ctx.translate(swordAltar.x-treeSpot.x,swordAltar.y-treeSpot.y);ctx.fillStyle='#102118';ctx.beginPath();ctx.ellipse(0,15,44,22,0,0,7);ctx.fill();ctx.fillStyle='#5f675f';ctx.fillRect(-19,-10,38,28);ctx.fillStyle='#95a08f';ctx.fillRect(-14,-15,28,23);ctx.strokeStyle='#d4d2b6';ctx.lineWidth=2;ctx.strokeRect(-14,-15,28,23);poly([[-23,-10],[0,-28],[23,-10]],'#6e795f');if(player.masterSword){ctx.fillStyle='#95cfdc';ctx.fillRect(-2,-26,4,13);ctx.fillStyle='#ceb876';ctx.fillRect(-8,-14,16,4);circle(0,-12,3,'#7fe8ff')}else{ctx.save();ctx.translate(0,-14);ctx.rotate(.12);ctx.scale(.82,.82);detailedMasterSword();ctx.restore()}ctx.fillStyle='#f4ebc0';ctx.font='bold 11px Nunito,sans-serif';ctx.textAlign='center';ctx.fillText(player.masterSword?'SACRED ALTAR':'MASTER SWORD',0,-42);if(Math.hypot(player.x-swordAltar.x,player.y-swordAltar.y)<62)ctx.fillText(player.masterSword?'E · HONOUR THE ALTAR':allShrinesDone()?'E · DRAW THE MASTER SWORD':'CLEAR ALL SHRINES',0,45);ctx.restore();
+ for(let i=0;i<18;i++){let a=i*2.399,dist=54+(i%4)*12;circle(Math.cos(a)*dist,16+Math.sin(a)*dist*.55,2+(i%3),'#627e52')}
+ // Great roots reach out like arms, with lighter bark on their ridges.
+ for(let i=0;i<9;i++){
+   let a=(i/9)*Math.PI*2+.2,len=50+(i%4)*14;
+   let ex=Math.cos(a)*len,ey=19+Math.sin(a)*len*.58;
+   ctx.strokeStyle='#35291e';ctx.lineWidth=12+(i%3)*3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(0,8);ctx.quadraticCurveTo(ex*.4,18+ey*.26,ex,ey);ctx.stroke();
+   ctx.strokeStyle='#786348';ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(-3,5);ctx.quadraticCurveTo(ex*.4-3,15+ey*.28,ex,ey-2);ctx.stroke();
+ }
+ // Broad tapering trunk, asymmetrically flared at its base.
+ let bark=ctx.createLinearGradient(-44,0,51,0);bark.addColorStop(0,'#281e16');bark.addColorStop(.22,'#665039');bark.addColorStop(.42,'#8a7352');bark.addColorStop(.6,'#625038');bark.addColorStop(.8,'#403027');bark.addColorStop(1,'#221c16');
+ ctx.fillStyle=bark;ctx.beginPath();ctx.moveTo(-48,23);ctx.bezierCurveTo(-43,1,-28,-36,-31,-79);ctx.bezierCurveTo(-37,-115,-19,-135,-10,-161);ctx.lineTo(18,-154);ctx.bezierCurveTo(29,-124,40,-99,34,-68);ctx.bezierCurveTo(27,-35,47,-5,52,23);ctx.bezierCurveTo(26,9,18,-5,0,-4);ctx.bezierCurveTo(-24,-4,-29,11,-48,23);ctx.fill();
+ // Branch forks and bark texture follow the taper, not a regular rectangle.
+ ctx.strokeStyle='#2f291e';ctx.lineCap='round';ctx.lineWidth=20;ctx.beginPath();ctx.moveTo(-15,-76);ctx.quadraticCurveTo(-59,-125,-89,-138);ctx.moveTo(14,-100);ctx.quadraticCurveTo(53,-144,92,-152);ctx.stroke();
+ ctx.strokeStyle='#857356';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-13,-74);ctx.quadraticCurveTo(-59,-122,-85,-136);ctx.moveTo(17,-98);ctx.quadraticCurveTo(56,-141,88,-149);ctx.stroke();
+ for(let i=0;i<24;i++){const x=-27+(i*17%57),y=-7-(i*29%132);let narrow=.6-Math.abs(y+75)/240;
+ if(Math.abs(x)>30*narrow+14)continue;
+ ctx.strokeStyle=i%3?'#322a1ec0':'#bba07a80';ctx.lineWidth=.9+(i%3)*.45;ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x+(i%2?5:-7),y-7,x-4,y-13,x+(i%3-1)*5,y-19);ctx.stroke()}
+ // Raised knots, weathered patches, moss and small shelf fungi.
+ for(let i=0;i<9;i++){const y=-12-i*14,x=Math.sin(i*4.2)*22;ctx.fillStyle=i%2?'#486342':'#3c513a';ctx.beginPath();ctx.ellipse(x,y,4+i%3,3+i%4,.35,0,7);ctx.fill()}
+ for(let i=0;i<5;i++){let x=(i%2?-1:1)*(22+i%3*5),y=-15-i*21;
+ ctx.fillStyle='#c4ab7b';ctx.beginPath();ctx.ellipse(x,y,9,3,i%2?.3:-.3,0,7);ctx.fill();line(x-6,y+2,x+4,y+3,'#524132',1)}
+ // Leaf masses: shaded under-canopy, distinct warm highlights and hundreds of small leaves.
+ const clumps=[[-77,-159,35],[-44,-186,46],[-7,-201,44],[44,-190,46],[81,-163,35],[-92,-131,29],[95,-134,28],[0,-157,54]];
+ for(let i=0;i<clumps.length;i++){let [bx,by,r]=clumps[i],x=bx+Math.sin(clock*.6+i)*2,y=by+sw*.5;
+ ctx.fillStyle='#172e20';ctx.beginPath();ctx.ellipse(x,y+6,r*1.03,r*.75,0,0,7);ctx.fill();
+ const lg=ctx.createRadialGradient(x-r*.35,y-r*.35,r*.08,x,y,r);
+ lg.addColorStop(0,i%2?'#759453':'#617c49');lg.addColorStop(.55,i%2?'#416641':'#38583b');lg.addColorStop(1,'#1f3e2b');
+ ctx.fillStyle=lg;ctx.beginPath();ctx.ellipse(x,y,r,r*.8,0,0,7);ctx.fill();
+ for(let j=0;j<12;j++){let a=j*2.399+i*1.45,rad=r*(.36+(j%4)*.15),lx=x+Math.cos(a)*rad,ly=y+Math.sin(a)*rad*.72;
+ ctx.fillStyle=j%3===0?'#92a563':j%3===1?'#66834d':'#456f49';ctx.beginPath();ctx.ellipse(lx,ly,3.2+j%3,1.5+j%2,a,0,7);ctx.fill()}
+ }
+ // Dangling vinelets and seedpods from the underside of the canopy.
+ for(let i=0;i<10;i++){let x=-98+i*21,by=-141+(i%3)*8;
+ ctx.strokeStyle='#304b31';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,by-12);ctx.bezierCurveTo(x+sw*2,by+9,x-4,by+19+(i%3)*7,x+sw*3,by+29+(i%3)*8);ctx.stroke();
+ circle(x+sw*3,by+28+(i%3)*8,2.5,'#7c9e5c')}
+ // Face is sculpted into the actual wood; dark sockets, bark eyebrows, and a noble expression.
+ ctx.fillStyle='#352a1e';ctx.beginPath();ctx.ellipse(-17,-64,14,9,-.24,0,7);ctx.ellipse(17,-64,14,9,.24,0,7);ctx.fill();
+ ctx.strokeStyle='#b39a74';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-31,-75);ctx.quadraticCurveTo(-17,-85,-4,-72);ctx.moveTo(4,-72);ctx.quadraticCurveTo(17,-85,31,-75);ctx.stroke();
+ if(!blink){circle(-17,-64,3.1,'#c7c89a');circle(17,-64,3.1,'#c7c89a');circle(-17,-64,1.35,'#181c13');circle(17,-64,1.35,'#181c13')}
+ ctx.fillStyle='#977d59';ctx.beginPath();ctx.moveTo(-4,-65);ctx.lineTo(-11,-42);ctx.quadraticCurveTo(0,-35,10,-43);ctx.lineTo(4,-65);ctx.fill();
+ ctx.strokeStyle='#2c201a';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-16,-27);ctx.quadraticCurveTo(0,-17,18,-28);ctx.stroke();
+ ctx.strokeStyle='#ba9b6d';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-13,-33);ctx.quadraticCurveTo(0,-37,14,-33);ctx.stroke();
+ // Tiny forest spirits and drifting motes make the hidden grove feel alive.
+ for(let i=0;i<8;i++){let a=clock*.32+i*2.399,px=Math.cos(a)*78,py=-72+Math.sin(a*1.4)*58;
+ ctx.globalAlpha=.36+.26*Math.sin(clock*2+i);ctx.shadowColor='#d4eda4';ctx.shadowBlur=10;circle(px,py,1.8,'#ddf2af');ctx.shadowBlur=0}ctx.globalAlpha=1;
+ if(Math.hypot(player.x-treeSpot.x,player.y-treeSpot.y)<150){ctx.textAlign='center';ctx.font='bold 13px Nunito,sans-serif';ctx.fillStyle='#f3ecb8';ctx.shadowColor='#0b140b';ctx.shadowBlur=7;ctx.fillText('THE GREAT TREE · HIDDEN ELF VILLAGE',0,-230);
+ if(Math.hypot(player.x-treeSpot.x,player.y-treeSpot.y)<105)ctx.fillText('E · SEEK ANCIENT WISDOM',0,44)}
+ ctx.restore();
+}
+// Classic overhead 2D maze. The camera follows Link, who never rotates.
+function render(){
+ ctx.fillStyle='#07150f';ctx.fillRect(0,0,W,H);
+ const camX=clamp(player.x-W/2,0,Math.max(0,COLS*TILE-W)),camY=clamp(player.y-H/2,0,Math.max(0,ROWS*TILE-H));
+ ctx.save();ctx.translate(-camX,-camY);
+ const x0=Math.max(0,Math.floor(camX/TILE)-1),x1=Math.min(COLS-1,Math.ceil((camX+W)/TILE)+1);
+ const y0=Math.max(0,Math.floor(camY/TILE)-1),y1=Math.min(ROWS-1,Math.ceil((camY+H)/TILE)+1);
+ for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){
+  const tx=x*TILE,ty=y*TILE,wall=grid[y][x];
+  if(wall){ctx.fillStyle=realm==='lava'?'#33252e':realm==='dungeon'?'#53475e':(x+y)%3===0?'#48685a':'#385747';ctx.fillRect(tx,ty,TILE,TILE);ctx.fillStyle='#6c8974';ctx.fillRect(tx+2,ty+2,TILE-4,5);ctx.fillStyle='#233c30';ctx.fillRect(tx+3,ty+TILE-9,TILE-6,6);ctx.strokeStyle='#1c3a2e';ctx.strokeRect(tx+.5,ty+.5,TILE-1,TILE-1);ctx.fillStyle=realm==='dungeon'?'#85748a55':'#a2b69632';for(let k=0;k<3;k++){let px=tx+8+(x*17+y*11+k*13)%32,py=ty+8+(x*7+y*19+k*11)%30;ctx.fillRect(px,py,3+(k%2)*5,2)}ctx.strokeStyle='#101c1966';ctx.beginPath();ctx.moveTo(tx+12,ty+15);ctx.lineTo(tx+21,ty+21);ctx.lineTo(tx+17,ty+33);ctx.stroke();if(realm==='maze'){if((x*29+y*17)%2===0){ctx.fillStyle='#5c785f44';ctx.fillRect(tx+6,ty+7,14,6);ctx.fillRect(tx+24,ty+20,10,4)}if((x*13+y*31)%3!==0){ctx.strokeStyle='#557f4e';ctx.lineWidth=2;for(let k=0;k<3;k++){let vx=tx+8+k*12+((x+y+k)%2?2:0),vy=ty+2;ctx.beginPath();ctx.moveTo(vx,vy);ctx.bezierCurveTo(vx-2,vy+7,vx+5,vy+13,vx+((k%2)?6:-4),vy+20+k*3);ctx.stroke();circle(vx+((k%2)?5:-4),vy+11+k*3,2.5,'#6d9a59');circle(vx+1,vy+16+k*2,2,'#78ab63')}}if((x*7+y*11)%4===0){ctx.strokeStyle='#7aa06f88';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(tx+4,ty+15);ctx.lineTo(tx+15,ty+11);ctx.lineTo(tx+22,ty+17);ctx.stroke()}}}
+  else {ctx.fillStyle=realm==='lava'?((x+y)%3?'#2a2023':'#392629'):realm==='dungeon'?((x+y)%2?'#2e283f':'#362d49'):(x+y)%2?'#1a3428':'#1e392b';ctx.fillRect(tx,ty,TILE,TILE);ctx.fillStyle='#4d715039';ctx.fillRect(tx+8+(x*13%11),ty+11+(y*7%13),3,3);if(realm==='maze'){if((x*71+y*43)%19===0){ctx.strokeStyle='#538453';ctx.lineWidth=2;for(let k=0;k<4;k++){let px=tx+13+k*5;ctx.beginPath();ctx.moveTo(px,ty+36);ctx.lineTo(px+(k%2?4:-3),ty+26-k%3*3);ctx.stroke()}}if((x*17+y*19)%7===0){ctx.strokeStyle='#6e8f64';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(tx+6,ty+40);ctx.lineTo(tx+18,ty+30);ctx.lineTo(tx+31,ty+39);ctx.stroke();circle(tx+18,ty+30,2.2,'#84ae6c')}if((x*13+y*5)%8===0){ctx.fillStyle='#274530';ctx.fillRect(tx+3,ty+4,18,3);ctx.fillStyle='#456b4c';ctx.fillRect(tx+4,ty+5,3,8);ctx.fillRect(tx+10,ty+5,3,6);ctx.fillRect(tx+17,ty+5,3,9)}if((x*29+y*23)%9===0){circle(tx+15,ty+33,2.5,'#8aa392');circle(tx+23,ty+36,3,'#687f71');circle(tx+31,ty+31,2,'#a79f93')}}if((x*23+y*41)%31===0){ctx.save();ctx.translate(tx+24,ty+23);ctx.strokeStyle=realm==='dungeon'?'#ae88c0':'#5b9669';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-15,12);ctx.lineTo(-4,-9);ctx.lineTo(7,-2);ctx.lineTo(16,-16);ctx.stroke();ctx.fillStyle=realm==='dungeon'?'#b384d5':'#87bca2';ctx.fillRect(-8,-11,4,4);ctx.fillRect(13,-18,3,3);ctx.restore()}if((x*37+y*23)%11===0){circle(tx+29,ty+24,3,realm==='maze'?'#769475':'#776586');circle(tx+34,ty+27,2,'#ac9b8e')}}
+ }
+ // Zelda's dungeon: three magical locks and a guardian.
+ if(realm==='dungeon'){for(let yy=5;yy<=42;yy++)for(let xx=16;xx<=32;xx++)if(grid[yy]?.[xx]===0){ctx.fillStyle='#8264b51a';ctx.fillRect(xx*TILE,yy*TILE,TILE,TILE);ctx.strokeStyle='#9472c04a';ctx.strokeRect(xx*TILE+4,yy*TILE+4,TILE-8,TILE-8)}
+ for(let i=0;i<2;i++){let p=dungeon.runes[i];ctx.save();ctx.shadowBlur=18;ctx.shadowColor=i<dungeon.stage?'#8affd2':'#d3a6ff';circle(p.x,p.y,15,i<dungeon.stage?'#50daac':'#9966c2');ctx.fillStyle='#fff';ctx.font='bold 17px sans-serif';ctx.textAlign='center';ctx.fillText(i===0?'☀':'☾',p.x,p.y+6);ctx.restore()}let cr=dungeon.crystal;ctx.save();ctx.shadowBlur=20;ctx.shadowColor='#e4c7ff';poly([[cr.x,cr.y-20],[cr.x+14,cr.y],[cr.x,cr.y+20],[cr.x-14,cr.y]],dungeon.stage===4?'#79f7cd':'#ca93ff');ctx.restore();}
+ if(realm==='maze'){drawSanctuary();drawVillage();drawGreatTree();for(const [i,elf] of villageWalkers.entries()){if(Math.abs(player.x-elf.x)<W/2+75&&Math.abs(player.y-elf.y)<H/2+75){drawElf(elf.x,elf.y,elf.name,i,elf.trait)}}for(let i=0;i<secretPassages.length;i++)drawSecretPassage(secretPassages[i],i)}if(realm==='house')drawHouseInterior();
+ if(realm==='maze'){for(let sh of shrines){ctx.save();ctx.translate(sh.x,sh.y);ctx.shadowColor=sh.done?'#7fffc2':'#98d9ff';ctx.shadowBlur=18;circle(0,0,22,'#233b43');ctx.strokeStyle=sh.done?'#80e3b0':'#8bd4ed';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,22,0,7);ctx.stroke();poly([[0,-15],[13,0],[0,15],[-13,0]],sh.done?'#4dba91':'#d4ecf5');ctx.font='bold 11px Nunito';ctx.textAlign='center';ctx.fillStyle='#eef8ed';ctx.fillText(sh.done?'CLEARED':'SHRINE',0,-32);ctx.restore()}}if(realm==='maze'&&player.keys===3){ctx.save();ctx.translate(portal.x,portal.y);ctx.shadowBlur=27;ctx.shadowColor='#bc83ff';circle(0,0,30+Math.sin(clock*3)*3,'#6c3b9d');circle(0,0,20,'#211442');ctx.strokeStyle='#efdfaa';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,34,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#fff2b3';ctx.textAlign='center';ctx.font='bold 13px sans-serif';ctx.fillText('SHADOW KEEP',0,-49);if(Math.hypot(player.x-portal.x,player.y-portal.y)<83)ctx.fillText('E ENTER',0,52);ctx.restore()}
+ if(realm==='maze'){ctx.save();ctx.translate(riftPortal.x,riftPortal.y);ctx.shadowBlur=22;ctx.shadowColor='#ff571b';circle(0,0,27+Math.sin(clock*4)*3,'#8f281c');circle(0,0,19,'#1c0c23');ctx.strokeStyle='#ffa252';ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,0,29,clock,clock+Math.PI*1.6);ctx.stroke();ctx.fillStyle='#ffe0ad';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.fillText('EMBER RIFT',0,-42);if(Math.hypot(player.x-riftPortal.x,player.y-riftPortal.y)<82)ctx.fillText('E ENTER',0,46);ctx.restore()}
+ if(realm==='lava'){
+ for(let yy=y0;yy<=y1;yy++)for(let xx=x0;xx<=x1;xx++){if(grid[yy]?.[xx]!==0)continue;let tx=xx*TILE,ty=yy*TILE;if((xx*19+yy*17)%8<3){ctx.save();ctx.globalAlpha=.72;ctx.shadowColor='#ff5422';ctx.shadowBlur=12;ctx.fillStyle='#ad3c19';ctx.fillRect(tx+8,ty+11,32,25);ctx.fillStyle='#ff8435';ctx.fillRect(tx+11+Math.sin(clock*2+xx)*3,ty+17,25,9);ctx.restore()}if((xx+yy*11)%9===0){line(tx+3,ty+39,tx+26,ty+24,'#f06028',2);line(tx+26,ty+24,tx+44,ty+30,'#c64824',2)}}
+ if(lava.phase==='trials'&&lava.step<6){const st=lavaStations[lava.step];ctx.save();ctx.translate(st.x,st.y);ctx.shadowBlur=26;ctx.shadowColor='#ffb75f';circle(0,0,25,'#642d26');circle(0,0,17,'#fb9b39');circle(0,0,9,'#ffe8a5');ctx.fillStyle='#fff0c0';ctx.textAlign='center';ctx.font='bold 13px sans-serif';ctx.fillText(lava.step%2?'PUZZLE ALTAR':'RIDDLE ALTAR',0,-37);if(Math.hypot(st.x-player.x,st.y-player.y)<85)ctx.fillText('E ACTIVATE',0,47);ctx.restore()}
+ if(lava.phase==='complete'){ctx.save();ctx.translate(lavaExit.x,lavaExit.y);ctx.shadowBlur=24;ctx.shadowColor='#a5fff2';circle(0,0,26,'#317d7d');circle(0,0,17,'#0c2832');ctx.font='bold 12px sans-serif';ctx.fillStyle='#f5ffff';ctx.textAlign='center';ctx.fillText('RETURN PORTAL · E',0,-40);ctx.restore()}
+ if(lava.phase==='detach'||lava.phase==='boss'){ctx.save();ctx.translate(shadowBoss.x,shadowBoss.y);let dp=lava.phase==='detach'?Math.min(1,(3.8-lava.detaching)/3.8):1;ctx.globalAlpha=lava.phase==='detach'?.4+dp*.7:1;ctx.shadowColor='#ff3545';ctx.shadowBlur=14+dp*10;drawShadowLinkFigure(dp,lava.phase==='boss');ctx.restore()}
+ }
+ for(let it of items)if(!it.dead&&Math.abs(it.x-player.x)<W/2+35&&Math.abs(it.y-player.y)<H/2+35){
+  ctx.save();ctx.translate(it.x,it.y+Math.sin(clock*3+it.t)*3);
+  const color=it.type==='seal'?'#f4da69':it.type==='compass'?'#b5dafa':it.type==='banana'?'#ffe36e':it.type==='heart'?'#ee687c':'#6dd8ae';
+  ctx.shadowColor=color;ctx.shadowBlur=14;circle(0,0,11,color);circle(0,0,5,'#fff3c1');ctx.restore();
+ }
+ if(realm==='maze'){for(const [i,t] of hiddenYiga.entries())drawTraveller(t,i)}
+ for(let n of (realm==='maze'?npcs:[])){if(Math.abs(n.x-player.x)>W/2+40||Math.abs(n.y-player.y)>H/2+40)continue;ctx.save();ctx.translate(n.x,n.y);circle(0,9,14,'#08150b99');rect(-10,-4,20,23,n.color);circle(0,-12,10,'#efcbac');poly([[-12,-19],[0,-29],[12,-19]],n.color);
+ // Distinctive cloaks, sleeves, belted garments and facial features.
+ poly([[-11,-2],[-18,14],[-10,20],[10,20],[18,14],[11,-2]],n.color);rect(-10,4,20,2,'#d8bc7b');rect(-2,3,4,5,'#e9dba5');
+ rect(-17,1,5,12,'#d3b89c');rect(12,1,5,12,'#d3b89c');rect(-8,16,6,8,'#49362f');rect(3,16,6,8,'#49362f');
+ circle(-4,-13,1.5,'#473c37');circle(4,-13,1.5,'#473c37');line(-3,-7,3,-7,'#a16f5e',1);
+ if(n.kind==='sage'){poly([[-11,-22],[0,-36],[11,-22]],'#a19dcb');circle(0,-29,3,'#fcecb9')}else if(n.kind==='compass'){line(-13,1,12,11,'#cbb789',2);circle(12,11,4,'#efdb9b')}else{poly([[-9,-19],[-5,-26],[6,-26],[10,-19]],'#ddd0b7');line(-6,-6,6,-6,'#e6e2d2',2)}
+ ctx.fillStyle='#f8ebac';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.fillText(n.name,0,-36);if(Math.hypot(n.x-player.x,n.y-player.y)<78){ctx.fillStyle='#fff';ctx.fillText('E TALK',0,-51)}ctx.restore()}
+ for(let e of enemies)if(Math.abs(e.x-player.x)<W/2+50&&Math.abs(e.y-player.y)<H/2+50){monster(e);if(e.windup>0){ctx.save();ctx.strokeStyle=e.windup<.24?'#ff3838':'#ffc35e';ctx.lineWidth=3;ctx.globalAlpha=.7+.3*Math.sin(clock*21);ctx.beginPath();ctx.arc(e.x,e.y,e.r+13,0,Math.PI*2);ctx.stroke();ctx.restore()}if(e.stun>0){ctx.save();ctx.fillStyle='#e5eea6';ctx.font='bold 18px sans-serif';ctx.textAlign='center';ctx.fillText('✦ ✦',e.x,e.y-37);ctx.restore()}}
+ if(realm==='dungeon'&&!boss.dead&&Math.abs(boss.x-player.x)<W/2+55&&Math.abs(boss.y-player.y)<H/2+55){ctx.save();ctx.translate(boss.x,boss.y);ctx.shadowColor='#d36cde';ctx.shadowBlur=20;circle(0,8,25,'#301532');poly([[-23,17],[-24,-18],[0,-31],[24,-18],[23,17]],boss.hit>0?'#f8e7fc':'#5b286e');poly([[-23,-26],[-30,-40],[-17,-35],[-16,-49],[-5,-39],[2,-51],[13,-39],[23,-46],[20,-32]],'#a33b32');circle(0,-18,15,'#6f765c');poly([[-20,-27],[-29,-48],[-17,-39],[-7,-32],[0,-48],[8,-32],[17,-39],[29,-48],[20,-27]],'#d9b35b');poly([[-13,-15],[-7,-12],[-10,-7]],'#f0d8ad');poly([[13,-15],[7,-12],[10,-7]],'#f0d8ad');rect(-10,-22,7,4,'#ff494a');rect(3,-22,7,4,'#ff494a');rect(-15,1,30,8,'#3d233b');poly([[-24,16],[-17,4],[-11,18]],'#b99544');poly([[24,16],[17,4],[11,18]],'#b99544');
+ poly([[-15,-2],[0,7],[15,-2],[13,18],[-13,18]],'#4a244d');line(-13,6,13,6,'#d6a967',2);circle(0,4,5,'#bf4c50');
+ for(let k of [-1,1]){poly([[k*15,-12],[k*27,-15],[k*29,-3],[k*18,2]],'#6e5572');line(k*18,4,k*26,14,'#d4b56f',3);circle(k*10,-19,2,'#ffa777')}
+ poly([[-10,-4],[0,0],[10,-4],[5,9],[-5,9]],'#7e292e');line(-7,2,7,2,'#db9884',1);poly([[-8,-36],[-14,-45],[-6,-42],[0,-51],[6,-42],[15,-45],[8,-33]],'#c05139');
+ ctx.restore()}
+ if(realm==='dungeon'){ctx.save();ctx.translate(zelda.x,zelda.y);circle(0,12,13,'#06100caa');poly([[-15,-23],[-16,10],[-12,22],[-5,16],[-5,-22]],'#f1c75c');poly([[15,-23],[16,10],[12,22],[5,16],[5,-22]],'#e8bc47');poly([[-13,19],[-12,-7],[12,-7],[13,19]],'#f3eee4');rect(-11,-8,22,18,'#2869aa');poly([[-8,-8],[0,0],[8,-8]],'#fff0c4');rect(-3,-6,6,13,'#ead39e');circle(0,-16,10,'#f5d3b4');poly([[-9,-17],[-16,-12],[-9,-11]],'#f5d3b4');poly([[9,-17],[16,-12],[9,-11]],'#f5d3b4');poly([[-12,-19],[-10,-29],[-3,-34],[8,-32],[13,-23],[6,-25],[1,-20],[-3,-26]],'#efca56');circle(-4,-17,1.5,'#3a6078');circle(4,-17,1.5,'#3a6078');poly([[-8,-29],[0,-35],[8,-29],[0,-30]],'#f2d79b');
+ line(-10,0,10,0,'#edd8ab',2);poly([[-4,-3],[0,3],[4,-3],[0,-8]],'#e6b95b');circle(0,-3,2,'#61cde0');
+ rect(-11,9,22,2,'#d8be8f');line(-8,11,-8,18,'#a8b9dc',1.5);line(8,11,8,18,'#a8b9dc',1.5);
+ poly([[-12,-12],[-18,0],[-14,4],[-8,-4]],'#f4d7b5');poly([[12,-12],[18,0],[14,4],[8,-4]],'#f4d7b5');
+ poly([[-5,-29],[0,-37],[5,-29]],'#fff2b8');circle(0,-32,2,'#75d9e4');line(-4,-11,-2,-11,'#b47c65',1);line(2,-11,4,-11,'#b47c65',1);
+ ctx.restore();}
+ for(let a of arrows){ctx.save();ctx.translate(a.x,a.y);ctx.rotate(a.angle);line(-13,0,12,0,'#eacb8c',3);poly([[13,0],[3,-5],[3,5]],'#d8ecf2');line(-13,0,-20,-6,'#f6e8d2',2);line(-13,0,-20,6,'#f6e8d2',2);ctx.restore()}for(let p of projectiles){ctx.shadowBlur=12;ctx.shadowColor=p.ancient?'#ff5d39':p.banana?'#ffe279':'#ea62f7';circle(p.x,p.y,p.r,p.ancient?'#ff7850':p.banana?'#f7d55a':'#db7bf7');if(p.ancient){circle(p.x,p.y,p.r*.5,'#fff5c7');ctx.strokeStyle='#fbb36b';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(p.x,p.y,p.r+5,0,7);ctx.stroke()}if(p.banana){ctx.strokeStyle='#f9f0a0';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,p.r+2,-1.8,.8);ctx.stroke()}ctx.shadowBlur=0}
+ for(let b of deathBursts){ctx.save();ctx.globalAlpha=Math.max(0,b.life/b.max);ctx.strokeStyle='#ffeeb0';ctx.lineWidth=4*b.life/b.max;ctx.shadowBlur=18;ctx.shadowColor='#ffb75c';ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.stroke();ctx.restore()}for(let p of particles){ctx.globalAlpha=Math.max(0,Math.min(1,p.life/p.max));circle(p.x,p.y,p.r,p.color)}ctx.globalAlpha=1;
+ hero(player.x,player.y);
+ ctx.restore();
+ // Edge vignette restricts what can be seen to nearby corridors.
+ let vig=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.22,W/2,H/2,Math.max(W,H)*.8);vig.addColorStop(0,'#0000');vig.addColorStop(1,'#020906d9');ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+ if(mapVisible)drawMap();
+ if(transition>0){let t=transition/2.35,cover=t>.5?(1-t)*2:t*2;ctx.save();ctx.fillStyle=`rgba(7,3,20,${Math.min(1,cover*1.25)})`;ctx.fillRect(0,0,W,H);ctx.translate(W/2,H/2);ctx.strokeStyle='#c4a4ff';ctx.lineWidth=8;for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(0,0,(1-cover)*350+i*38,clock*2+i,clock*2+i+Math.PI*1.6);ctx.stroke()}ctx.fillStyle='#f6dfaa';ctx.font='bold 25px Cinzel,serif';ctx.textAlign='center';ctx.fillText('ENTERING THE SHADOW KEEP',0,15);ctx.restore()}
+}
+function drawMap(){let scale=164/Math.max(COLS,ROWS);mc.clearRect(0,0,164,164);mc.fillStyle='#06100d';mc.fillRect(0,0,164,164);for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++)if(explored[y][x]){mc.fillStyle=grid[y][x]?'#526c60':'#233f31';mc.fillRect(x*scale,y*scale,Math.ceil(scale),Math.ceil(scale))}let goal=objective();if(goal){let gx=goal.x/TILE*scale,gy=goal.y/TILE*scale;mc.fillStyle='#ffdf21';mc.shadowColor='#ffe02a';mc.shadowBlur=10;mc.beginPath();mc.arc(gx,gy,5.5+Math.sin(clock*5)*1.5,0,7);mc.fill();mc.shadowBlur=0;mc.strokeStyle='#ffe653';mc.lineWidth=1.5;mc.strokeRect(gx-8,gy-8,16,16)}for(let sh of (realm==='maze'?shrines:[])){if(sh.done)continue;mc.fillStyle='#70ddff';mc.fillRect(sh.x/TILE*scale-2,sh.y/TILE*scale-2,5,5)}// Minimap uses mc only; never draw world-space travellers onto the main canvas here.
+ for(let n of (realm==='maze'?npcs:[])){let nx=n.x/TILE*scale,ny=n.y/TILE*scale;if(explored[Math.floor(n.y/TILE)][Math.floor(n.x/TILE)]){mc.fillStyle=n.color;mc.fillRect(nx-2,ny-2,4,4)}}if(realm==='maze'&&explored[Math.floor(treeSpot.y/TILE)]?.[Math.floor(treeSpot.x/TILE)]){mc.fillStyle='#a8ee72';mc.beginPath();mc.arc(treeSpot.x/TILE*scale,treeSpot.y/TILE*scale,3,0,7);mc.fill();mc.fillStyle=player.masterSword?'#8fe4ff':'#f6f2b3';mc.fillRect(swordAltar.x/TILE*scale-2,swordAltar.y/TILE*scale-2,5,5)}if(realm==='maze'){for(let p of secretPassages){if(Math.hypot(player.x-p.x,player.y-p.y)<160)p.found=true;if(p.found){mc.fillStyle='#c8e6a6';mc.fillRect(p.x/TILE*scale-2,p.y/TILE*scale-2,5,5)}}}mc.fillStyle='#7dfdb4';mc.beginPath();mc.arc(player.x/TILE*scale,player.y/TILE*scale,4,0,7);mc.fill();mc.fillStyle='#ffe77d';mc.font='bold 9px sans-serif';mc.fillText(realm==='lava'?'RIFT '+lava.step+'/6':realm==='dungeon'?'SHADOW KEEP':questFocus?'SIDE QUEST':'MAIN GOAL',5,160)}
+function toggleTestInvulnerability(){player.testInvulnerable=!player.testInvulnerable;const b=document.getElementById('testInvul');b.setAttribute('aria-pressed',String(player.testInvulnerable));b.textContent='TEST MODE · INVULNERABLE: '+(player.testInvulnerable?'ON':'OFF')+' (I)';msg(player.testInvulnerable?'TEST INVULNERABILITY ENABLED — DAMAGE DISABLED':'TEST INVULNERABILITY DISABLED — DAMAGE RESTORED',2.5);tone(player.testInvulnerable?880:320,.15,'triangle',.05,.9)}
+let prev=performance.now();function frame(now){let dt=(now-prev)/1000;prev=now;update(dt);render();requestAnimationFrame(frame)}requestAnimationFrame(frame);function heal(){if(player.potions>0&&player.hp<player.maxHp&&!paused){player.potions--;player.hp=Math.min(player.maxHp,player.hp+3);sparkle(player.x,player.y,'#77e9b5',25);healMusicUntil=clock+4.5;tone(440,.45,'sine',.09,2)}}addEventListener('keydown',e=>{if(document.getElementById('shopOverlay').style.display==='flex'){if(e.code==='Escape'||e.code==='KeyE'){document.getElementById('shopOverlay').style.display='none'}return}if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight'].includes(e.code))e.preventDefault();if(lava.question){if(e.code==='Escape'){closePuzzle();return}if(['Digit1','Digit2','Digit3'].includes(e.code)){answerLava(Number(e.code.slice(-1)));return}return}if(puzzle){if(e.code==='Escape'){closePuzzle();return}if(e.code==='KeyR'){let sh=puzzle.sh;openPuzzle(sh);msg('Puzzle chamber reset.',2);return}let moveKeys={ArrowUp:[0,-1],KeyW:[0,-1],ArrowDown:[0,1],KeyS:[0,1],ArrowLeft:[-1,0],KeyA:[-1,0],ArrowRight:[1,0],KeyD:[1,0]};if(moveKeys[e.code]){e.preventDefault();puzzleMove(...moveKeys[e.code]);return}if(e.code==='KeyE'||e.code==='Space'){puzzleAction();return}return}if(!keys[e.code]){if(e.code==='KeyI'&&!ended&&!document.getElementById('overlay').offsetParent){toggleTestInvulnerability()}if(e.code==='KeyK'&&player.parryCooldown<=0){player.parry=.21;player.parryCooldown=.48;}
+if(activeShrine&&['Digit1','Digit2','Digit3'].includes(e.code)){shrineInput(e.code.slice(-1));keys[e.code]=true;return}if(['Space','KeyJ'].includes(e.code))slash();if(e.code==='KeyF')fireBow();if(e.code==='Digit1'&&!activeShrine){if(player.masterSword){player.weapon='sword';msg('Master Sword equipped',1)}else msg('The Master Sword waits in the sacred altar. Clear every shrine first.',2.8)}if(e.code==='Digit2'&&!activeShrine){player.weapon='bow';msg('Bow equipped',1)}if(e.code==='KeyH')heal();if(e.code==='KeyE'){interact();}if(e.code==='KeyQ'){questFocus=!questFocus;msg(questFocus?'Yellow marker: side quest':'Yellow marker: main quest',2)}if(e.code==='KeyM'){mapVisible=!mapVisible;document.getElementById('map').style.display=mapVisible?'block':'none'}if(e.code==='KeyP'&&started&&!ended){paused=!paused;msg(paused?'Paused':'Quest resumed',1)}}keys[e.code]=true});addEventListener('keyup',e=>{keys[e.code]=false});addEventListener('blur',()=>{keys={}});document.querySelectorAll('[data-key]').forEach(b=>{let k=b.dataset.key;b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);if(k==='Space')slash();else if(k==='KeyF')fireBow();else keys[k]=true});b.addEventListener('pointerup',()=>keys[k]=false);b.addEventListener('pointercancel',()=>keys[k]=false)});document.getElementById('start').onclick=()=>{started=true;paused=false;document.getElementById('overlay').style.display='none';try{audio=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}msg('Clear the shrines, claim the Master Sword from the elf village, and rescue Zelda!',5)};document.getElementById('shopClose').onclick=()=>{document.getElementById('shopOverlay').style.display='none'};document.getElementById('puzzleClose').onclick=closePuzzle;document.getElementById('mute').onclick=()=>{soundOn=!soundOn;document.getElementById('mute').textContent=soundOn?'♫ Sound on':'♫ Sound off'};document.getElementById('testInvul').onclick=toggleTestInvulnerability;
+})();
+</script></body></html>
